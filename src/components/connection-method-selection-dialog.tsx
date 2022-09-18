@@ -61,6 +61,7 @@ export interface ConnectionMethodSelectionDialogProps
   extends HTMLAttributes<HTMLDivElement> {
   methods: LikeCoinWalletConnectorMethodType[];
   isShowMobileWarning?: boolean;
+  keplrInstallURLOverride?: string;
   onClose?: () => void;
   onConnect?: (method: LikeCoinWalletConnectorMethodType) => void;
 }
@@ -71,6 +72,7 @@ export interface ConnectionMethodSelectionDialogProps
 export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialogProps> = ({
   methods,
   isShowMobileWarning = true,
+  keplrInstallURLOverride,
   onClose,
   onConnect,
 }) => {
@@ -84,7 +86,13 @@ export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialog
         const method = connectionMethodMap[type];
         return !!method && (!isMobile || (isMobile && method.isMobileOk));
       })
-      .map(type => connectionMethodMap[type])
+      .map(type => {
+        const method = { ...connectionMethodMap[type] };
+        if (type === LikeCoinWalletConnectorMethodType.Keplr && keplrInstallURLOverride) {
+          method.url = keplrInstallURLOverride;
+        }
+        return method;
+      })
       .reduce((tieredMethods, method) => {
         if (!tieredMethods[method.tier]) {
           tieredMethods[method.tier] = new Array<

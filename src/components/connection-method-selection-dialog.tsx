@@ -2,6 +2,7 @@ import React, { FC, HTMLAttributes } from 'react';
 import { isMobile as isMobileDevice } from '@walletconnect/browser-utils';
 
 import {
+  KeplrInstallCTAPreset,
   LikeCoinWalletConnectorMethod,
   LikeCoinWalletConnectorMethodType,
 } from '../types';
@@ -70,6 +71,7 @@ export interface ConnectionMethodSelectionDialogProps
   methods: LikeCoinWalletConnectorMethodType[];
   isShowMobileWarning?: boolean;
   keplrInstallURLOverride?: string;
+  keplrInstallCTAPreset?: KeplrInstallCTAPreset;
   onClose?: () => void;
   onConnect?: (method: LikeCoinWalletConnectorMethodType) => void;
 }
@@ -81,6 +83,7 @@ export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialog
   methods,
   isShowMobileWarning = true,
   keplrInstallURLOverride,
+  keplrInstallCTAPreset,
   onClose,
   onConnect,
 }) => {
@@ -142,6 +145,7 @@ export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialog
           key={`group-${index}`}
           methods={methods}
           isMobile={isMobile}
+          keplrInstallCTAPreset={keplrInstallCTAPreset}
           isCollapsible={index !== 0}
           collapsibleToggleButtonTitle="Other connection methods"
           onSelectMethod={onConnect}

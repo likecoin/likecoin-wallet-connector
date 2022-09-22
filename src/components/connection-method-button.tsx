@@ -37,7 +37,7 @@ export const ConnectionMethodButton: FC<Props> = ({
   keplrInstallCTAPreset = 'a',
   onPress,
 }) => {
-  const isUninstalled = React.useMemo(() => {
+  const isNotInstalled = React.useMemo(() => {
     switch (type) {
       case LikeCoinWalletConnectorMethodType.Keplr:
         return !isMobile && !window.keplr;
@@ -49,18 +49,18 @@ export const ConnectionMethodButton: FC<Props> = ({
   }, [type, isMobile]);
 
   const description = React.useMemo(() => {
-    if (isUninstalled) {
+    if (isNotInstalled) {
       return `You haven't installed.`;
     }
     if (isMobile) {
       return 'Click to open the app';
     }
     return defaultDescription;
-  }, [isUninstalled, isMobile, defaultDescription]);
+  }, [isNotInstalled, isMobile, defaultDescription]);
 
-  const Tag = isUninstalled ? 'a' : 'button';
+  const Tag = isNotInstalled ? 'a' : 'button';
 
-  const props = isUninstalled
+  const props = isNotInstalled
     ? {
         href: url,
         target: '_blank',
@@ -72,7 +72,7 @@ export const ConnectionMethodButton: FC<Props> = ({
 
   const buttonEl =
     type === LikeCoinWalletConnectorMethodType.Keplr &&
-    isUninstalled &&
+    isNotInstalled &&
     keplrInstallCTAPreset === 'c' ? (
       <>
         <div className="lk-text-center lk-font-bold lk-text-[16px] lk-text-gray-dark">
@@ -95,7 +95,7 @@ export const ConnectionMethodButton: FC<Props> = ({
         {...props}
       >
         {type === LikeCoinWalletConnectorMethodType.Keplr &&
-        isUninstalled &&
+        isNotInstalled &&
         keplrInstallCTAPreset === 'b' ? (
           <div className="lk-flex lk-flex-col lk-justify-center lk-items-center">
             <div className="lk-flex lk-justify-center lk-items-center lk-gap-[24px] lk-text-gray">
@@ -133,17 +133,17 @@ export const ConnectionMethodButton: FC<Props> = ({
             <div className="lk-flex lk-items-center group-hover:lk-text-like-green lk-transition-colors">
               <ConnectionMethodIcon type={type} />
               <div className="lk-ml-[12px] lk-text-[16px] sm:lk-text-[20px]">
-                {!!isUninstalled && <span>Install </span>}
+                {!!isNotInstalled && <span>Install </span>}
                 <span className="lk-font-bold">{name}</span>
               </div>
-              {!!isUninstalled && (
+              {!!isNotInstalled && (
                 <OpenInNewIcon className="lk-ml-[8px] lk-w-[12px] lk-h-[12px]" />
               )}
             </div>
             <div
               className={classNames(
                 'lk-mt-[16px] lk-text-[14px] sm:lk-text-[16px] lk-text-left lk-shrink-1',
-                { 'lk-text-red': isUninstalled }
+                { 'lk-text-red': isNotInstalled }
               )}
             >
               {description}
@@ -158,7 +158,7 @@ export const ConnectionMethodButton: FC<Props> = ({
       {buttonEl}
       {type === LikeCoinWalletConnectorMethodType.Keplr && (
         <>
-          {isUninstalled && ['b', 'c'].includes(keplrInstallCTAPreset) && (
+          {isNotInstalled && ['b', 'c'].includes(keplrInstallCTAPreset) && (
             <div className="lk-flex lk-justify-center lk-mt-[8px]">
               <Button tag="a" href={url} target="_blank">
                 <DownloadIcon />

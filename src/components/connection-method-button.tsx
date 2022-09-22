@@ -58,7 +58,7 @@ export const ConnectionMethodButton: FC<Props> = ({
     return defaultDescription;
   }, [isNotInstalled, isMobile, defaultDescription]);
 
-  const Tag = isNotInstalled ? 'a' : 'button';
+  const ButtonTag = isNotInstalled ? 'a' : 'button';
 
   const props = isNotInstalled
     ? {
@@ -78,7 +78,7 @@ export const ConnectionMethodButton: FC<Props> = ({
         <div className="lk-text-center lk-font-bold lk-text-[16px] lk-text-gray-dark">
           Install Keplr to get started
         </div>
-        <a className="lk-relative lk-block lk-w-full lk-mt-[8px]" {...props}>
+        <ButtonTag className="lk-relative lk-block lk-w-full lk-mt-[8px]" {...props}>
           <ConnectionMethodBgBanner className="lk-text-gray-light" />
           <div className="lk-absolute lk-inset-0 lk-flex lk-justify-center lk-items-center">
             <KeplrColorIcon
@@ -87,10 +87,10 @@ export const ConnectionMethodButton: FC<Props> = ({
               height={48}
             />
           </div>
-        </a>
+        </ButtonTag>
       </>
     ) : (
-      <Tag
+      <ButtonTag
         className="lk-block lk-w-full lk-border-[4px] lk-border-solid lk-border-gray-light hover:lk-border-like-cyan-light active:lk-bg-like-cyan-lightest lk-rounded-[16px] lk-p-[24px] lk-transition-colors lk-cursor-pointer lk-group"
         {...props}
       >
@@ -150,7 +150,7 @@ export const ConnectionMethodButton: FC<Props> = ({
             </div>
           </>
         )}
-      </Tag>
+      </ButtonTag>
     );
 
   return (

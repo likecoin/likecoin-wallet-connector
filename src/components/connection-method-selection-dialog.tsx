@@ -91,6 +91,8 @@ export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialog
 
   const isMobile = React.useMemo(isMobileDevice, []);
 
+  const isKeplrUninstalled = !isMobile && !window.keplr;
+
   const tieredConnectionMethods = React.useMemo(() => {
     const tieredMethods = methods
       .filter(type => {
@@ -127,12 +129,14 @@ export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialog
 
   return (
     <Dialog isOpen={isDialogOpen} onClose={closeDialog}>
-      <h1 className="lk-flex lk-items-center lk-gap-x-[12px] lk-text-like-green lk-font-bold">
-        <SignInIcon className="lk-w-[20px] lk-h-[20px] lk-shrink-0" />
-        <span>Connect a wallet</span>
-      </h1>
+      {!isKeplrUninstalled && (
+        <h1 className="lk-flex lk-items-center lk-gap-x-[12px] lk-text-like-green lk-font-bold lk-mb-[24px]">
+          <SignInIcon className="lk-w-[20px] lk-h-[20px] lk-shrink-0" />
+          <span>Connect a wallet</span>
+        </h1>
+      )}
       {isMobile && isShowMobileWarning && (
-        <Alert className="lk-mt-[24px]">
+        <Alert className="lk-mb-[24px]">
           <p>
             WalletConnect in mobile is an experimental feature, please visit
             this site on desktop for a better experience.
@@ -141,7 +145,6 @@ export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialog
       )}
       {tieredConnectionMethods.map((methods, index) => (
         <ConnectionMethodList
-          className="lk-mt-[24px]"
           key={`group-${index}`}
           methods={methods}
           isMobile={isMobile}

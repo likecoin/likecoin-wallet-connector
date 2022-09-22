@@ -9,7 +9,7 @@ export enum LikeCoinWalletConnectorMethodType {
   LikerId = 'liker-id',
 }
 
-export type KeplrInstallCTAPreset = 'a' | 'b';
+export type KeplrInstallCTAPreset = 'a' | 'b' | 'c';
 
 export interface LikeCoinWalletConnectorConfig {
   chainId: string;

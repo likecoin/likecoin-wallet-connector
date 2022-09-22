@@ -13,6 +13,7 @@ import { OpenInNewIcon } from './icons/open-in-new';
 import { Alert } from './alert';
 import { Button } from './button';
 import { ConnectionMethodIcon } from './connection-method-icon';
+import ConnectionMethodBgBanner from './connection-method-bg-banner';
 
 export interface Props {
   type?: LikeCoinWalletConnectorMethodType;
@@ -68,8 +69,27 @@ export const ConnectionMethodButton: FC<Props> = ({
     : {
         onClick: onPress,
       };
-  return (
-    <>
+
+  const buttonEl =
+    type === LikeCoinWalletConnectorMethodType.Keplr &&
+    isUninstalled &&
+    keplrInstallCTAPreset === 'c' ? (
+      <>
+        <div className="lk-text-center lk-font-bold lk-text-[16px] lk-text-gray-dark">
+          Install Keplr to get started
+        </div>
+        <a className="lk-relative lk-block lk-w-full lk-mt-[8px]" {...props}>
+          <ConnectionMethodBgBanner className="lk-text-gray-light" />
+          <div className="lk-absolute lk-inset-0 lk-flex lk-justify-center lk-items-center">
+            <KeplrColorIcon
+              className="lk-drop-shadow-xl"
+              width={48}
+              height={48}
+            />
+          </div>
+        </a>
+      </>
+    ) : (
       <Tag
         className="lk-block lk-w-full lk-border-[4px] lk-border-solid lk-border-gray-light hover:lk-border-like-cyan-light active:lk-bg-like-cyan-lightest lk-rounded-[16px] lk-p-[24px] lk-transition-colors lk-cursor-pointer lk-group"
         {...props}
@@ -131,9 +151,14 @@ export const ConnectionMethodButton: FC<Props> = ({
           </>
         )}
       </Tag>
+    );
+
+  return (
+    <>
+      {buttonEl}
       {type === LikeCoinWalletConnectorMethodType.Keplr && (
         <>
-          {isUninstalled && keplrInstallCTAPreset === 'b' && (
+          {isUninstalled && ['b', 'c'].includes(keplrInstallCTAPreset) && (
             <div className="lk-flex lk-justify-center lk-mt-[8px]">
               <Button tag="a" href={url} target="_blank">
                 <DownloadIcon />
@@ -141,7 +166,7 @@ export const ConnectionMethodButton: FC<Props> = ({
               </Button>
             </div>
           )}
-          <Alert className="lk-mt-[12px]" isPlain={true}>
+          <Alert className="lk-mt-[12px] lk-text-gray" isPlain={true}>
             <p>Ledger is not yet supported.</p>
           </Alert>
         </>

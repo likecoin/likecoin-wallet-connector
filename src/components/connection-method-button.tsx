@@ -34,7 +34,7 @@ export const ConnectionMethodButton: FC<Props> = ({
   description: defaultDescription,
   url,
   isMobile = false,
-  keplrInstallCTAPreset = 'a',
+  keplrInstallCTAPreset = 'origin',
   onPress,
 }) => {
   const isNotInstalled = React.useMemo(() => {
@@ -73,7 +73,7 @@ export const ConnectionMethodButton: FC<Props> = ({
   const buttonEl =
     type === LikeCoinWalletConnectorMethodType.Keplr &&
     isNotInstalled &&
-    keplrInstallCTAPreset === 'c' ? (
+    keplrInstallCTAPreset === 'fancy-banner' ? (
       <>
         <div className="lk-text-center lk-font-bold lk-text-[16px] lk-text-gray-dark">
           Install Keplr to get started
@@ -96,7 +96,7 @@ export const ConnectionMethodButton: FC<Props> = ({
       >
         {type === LikeCoinWalletConnectorMethodType.Keplr &&
         isNotInstalled &&
-        keplrInstallCTAPreset === 'b' ? (
+        keplrInstallCTAPreset === 'simple-banner' ? (
           <div className="lk-flex lk-flex-col lk-justify-center lk-items-center">
             <div className="lk-flex lk-justify-center lk-items-center lk-gap-[24px] lk-text-gray">
               <KeplrColorIcon width={32} height={32} />
@@ -158,14 +158,17 @@ export const ConnectionMethodButton: FC<Props> = ({
       {buttonEl}
       {type === LikeCoinWalletConnectorMethodType.Keplr && (
         <>
-          {isNotInstalled && ['b', 'c'].includes(keplrInstallCTAPreset) && (
-            <div className="lk-flex lk-justify-center lk-mt-[8px]">
-              <Button tag="a" href={url} target="_blank">
-                <DownloadIcon />
-                <span>Install Keplr</span>
-              </Button>
-            </div>
-          )}
+          {isNotInstalled &&
+            ['simple-banner', 'fancy-banner'].includes(
+              keplrInstallCTAPreset
+            ) && (
+              <div className="lk-flex lk-justify-center lk-mt-[8px]">
+                <Button tag="a" href={url} target="_blank">
+                  <DownloadIcon />
+                  <span>Install Keplr</span>
+                </Button>
+              </div>
+            )}
           <Alert className="lk-mt-[12px] lk-text-gray" isPlain={true}>
             <p>Ledger is not yet supported.</p>
           </Alert>

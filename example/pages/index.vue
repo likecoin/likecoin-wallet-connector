@@ -181,7 +181,7 @@ export default {
         preferNoSetMemo: true,
       },
       keplrInstallURLOverride: 'https://www.keplr.app/download',
-      keplrInstallCTAPreset: 'c',
+      keplrInstallCTAPreset: 'fancy-banner',
     });
     const session = this.connector.restoreSession();
     this.handleConnection(session);

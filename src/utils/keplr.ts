@@ -53,14 +53,14 @@ export async function initKeplr(
           coinDenom: options.coinDenom,
           coinMinimalDenom: options.coinMinimalDenom,
           coinDecimals: options.coinDecimals,
+          gasPriceStep: {
+            low: options.gasPriceStepLow,
+            average: options.gasPriceStepAverage,
+            high: options.gasPriceStepHigh,
+          },
         },
       ],
       coinType: options.coinType,
-      gasPriceStep: {
-        low: options.gasPriceStepLow,
-        average: options.gasPriceStepAverage,
-        high: options.gasPriceStepHigh,
-      },
       features: ['ibc-go', 'ibc-transfer', 'no-legacy-stdTx', 'stargate'],
     });
   } catch {

@@ -1,3 +1,4 @@
+import { AminoSignResponse } from '@cosmjs/amino';
 import {
   AccountData,
   DirectSignResponse,
@@ -12,6 +13,7 @@ import {
   LikeCoinWalletConnectorInitResponse,
   LikeCoinWalletConnectorMethodType,
   LikeCoinWalletConnectorOptions,
+  WalletConnectAccountResponse,
 } from '../types';
 
 import { convertWalletConnectAccountResponse } from './wallet';
@@ -50,13 +52,17 @@ export async function initCosmostationMobile(
       await wcConnector.killSession();
     }
     await wcConnector.connect();
-    const [account] = await wcConnector.sendCustomRequest({
-      id: payloadId(),
-      jsonrpc: '2.0',
-      method: 'cosmostation_wc_accounts_v1',
-      params: [options.chainId],
-    });
-    accounts = [convertWalletConnectAccountResponse(account)];
+    const results: WalletConnectAccountResponse[] = await wcConnector.sendCustomRequest(
+      {
+        id: payloadId(),
+        jsonrpc: '2.0',
+        method: options.cosmostationAppWC2Enabled
+          ? 'cosmos_getAccounts'
+          : 'cosmostation_wc_accounts_v1',
+        params: [options.chainId],
+      }
+    );
+    accounts = results.map(convertWalletConnectAccountResponse);
   }
   if (!accounts.length) {
     throw new Error('WALLETCONNECT_ACCOUNT_NOT_FOUND');
@@ -65,17 +71,21 @@ export async function initCosmostationMobile(
   let offlineSigner: OfflineSigner = {
     getAccounts: () => Promise.resolve(accounts),
     signAmino: async (signerBech32Address, signDoc) => {
-      const [result] = await wcConnector.sendCustomRequest({
-        id: payloadId(),
-        jsonrpc: '2.0',
-        method: 'cosmostation_wc_sign_tx_v1',
-        params: [options.chainId, signerBech32Address, signDoc],
-      });
+      const [result]: AminoSignResponse[] = await wcConnector.sendCustomRequest(
+        {
+          id: payloadId(),
+          jsonrpc: '2.0',
+          method: options.cosmostationAppWC2Enabled
+            ? 'cosmos_signAmino'
+            : 'cosmostation_wc_sign_tx_v1',
+          params: [options.chainId, signerBech32Address, signDoc],
+        }
+      );
       return result;
     },
   };
 
-  if (options.cosmostationAppWCDirectSignEnabled) {
+  if (options.cosmostationAppWC2Enabled) {
     offlineSigner = {
       ...offlineSigner,
       signDirect: async (signerBech32Address, signDoc) => {

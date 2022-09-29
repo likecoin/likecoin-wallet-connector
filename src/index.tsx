@@ -99,8 +99,7 @@ export class LikeCoinWalletConnector {
       keplrInstallCTAPreset: options.keplrInstallCTAPreset || 'origin',
       likerLandAppWCBridge: options.likerLandAppWCBridge || WC_BRIGDE,
       cosmostationAppWCBridge: options.cosmostationAppWCBridge || WC_BRIGDE,
-      cosmostationAppWCDirectSignEnabled:
-        options.cosmostationAppWCDirectSignEnabled || false,
+      cosmostationAppWC2Enabled: options.cosmostationAppWC2Enabled || false,
       isShowMobileWarning:
         options.isShowMobileWarning !== undefined
           ? !!options.isShowMobileWarning

@@ -62,7 +62,7 @@ export async function initCosmostationMobile(
     throw new Error('WALLETCONNECT_ACCOUNT_NOT_FOUND');
   }
 
-  const offlineSigner: OfflineSigner = {
+  let offlineSigner: OfflineSigner = {
     getAccounts: () => Promise.resolve(accounts),
     signAmino: async (signerBech32Address, signDoc) => {
       const [result] = await wcConnector.sendCustomRequest({
@@ -73,22 +73,28 @@ export async function initCosmostationMobile(
       });
       return result;
     },
-    signDirect: async (signerBech32Address, signDoc) => {
-      const {
-        signed: signedInJSON,
-        signature,
-      } = await wcConnector.sendCustomRequest({
-        id: payloadId(),
-        jsonrpc: '2.0',
-        method: 'cosmos_signDirect',
-        params: [signerBech32Address, SignDoc.toJSON(signDoc)],
-      });
-      return {
-        signed: SignDoc.fromJSON(signedInJSON),
-        signature,
-      } as DirectSignResponse;
-    },
   };
+
+  if (options.cosmostationAppWCDirectSignEnabled) {
+    offlineSigner = {
+      ...offlineSigner,
+      signDirect: async (signerBech32Address, signDoc) => {
+        const {
+          signed: signedInJSON,
+          signature,
+        } = await wcConnector.sendCustomRequest({
+          id: payloadId(),
+          jsonrpc: '2.0',
+          method: 'cosmos_signDirect',
+          params: [signerBech32Address, SignDoc.toJSON(signDoc)],
+        });
+        return {
+          signed: SignDoc.fromJSON(signedInJSON),
+          signature,
+        } as DirectSignResponse;
+      },
+    };
+  }
 
   return {
     accounts,

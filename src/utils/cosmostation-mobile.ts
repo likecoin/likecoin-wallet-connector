@@ -56,9 +56,7 @@ export async function initCosmostationMobile(
       {
         id: payloadId(),
         jsonrpc: '2.0',
-        method: options.cosmostationAppWC2Enabled
-          ? 'cosmos_getAccounts'
-          : 'cosmostation_wc_accounts_v1',
+        method: 'cosmostation_wc_accounts_v1',
         params: [options.chainId],
       }
     );
@@ -75,9 +73,7 @@ export async function initCosmostationMobile(
         {
           id: payloadId(),
           jsonrpc: '2.0',
-          method: options.cosmostationAppWC2Enabled
-            ? 'cosmos_signAmino'
-            : 'cosmostation_wc_sign_tx_v1',
+          method: 'cosmostation_wc_sign_tx_v1',
           params: [options.chainId, signerBech32Address, signDoc],
         }
       );
@@ -95,7 +91,7 @@ export async function initCosmostationMobile(
         } = await wcConnector.sendCustomRequest({
           id: payloadId(),
           jsonrpc: '2.0',
-          method: 'cosmos_signDirect',
+          method: 'cosmostation_wc_sign_direct_tx_v1',
           params: [signerBech32Address, SignDoc.toJSON(signDoc)],
         });
         return {

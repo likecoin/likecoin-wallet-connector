@@ -81,7 +81,7 @@ export async function initCosmostationMobile(
     },
   };
 
-  if (options.cosmostationAppWC2Enabled) {
+  if (options.cosmostationDirectSignEnabled) {
     offlineSigner = {
       ...offlineSigner,
       signDirect: async (signerBech32Address, signDoc) => {

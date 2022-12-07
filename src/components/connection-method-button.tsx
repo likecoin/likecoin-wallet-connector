@@ -1,5 +1,6 @@
-import classNames from 'classnames';
 import React, { FC, MouseEventHandler } from 'react';
+import { FormattedMessage } from 'react-intl';
+import classNames from 'classnames';
 
 import {
   KeplrInstallCTAPreset,
@@ -80,7 +81,7 @@ export const ConnectionMethodButton: FC<Props> = ({
     keplrInstallCTAPreset === 'fancy-banner' ? (
       <>
         <div className="lk-text-center lk-font-bold lk-text-[16px] lk-text-gray-dark">
-          Install Keplr to get started
+          <FormattedMessage id="connect_wallet_method_button_keplr_install_prompt" />
         </div>
         <ButtonTag
           className="lk-relative lk-block lk-w-full lk-mt-[8px]"
@@ -133,7 +134,7 @@ export const ConnectionMethodButton: FC<Props> = ({
                 />
               </svg>
             </div>
-            <div className="lk-mt-[16px]">Install Keplr to get started</div>
+            <FormattedMessage id="connect_wallet_method_button_keplr_install_prompt" />
           </div>
         ) : (
           <>
@@ -164,7 +165,9 @@ export const ConnectionMethodButton: FC<Props> = ({
                   onClick={handleClickInstallLikerLandAppButton}
                 >
                   <DownloadIcon />
-                  <span>Install Liker Land App</span>
+                  <span>
+                    <FormattedMessage id="connect_wallet_method_button_liker_land_app_install_prompt" />
+                  </span>
                 </Button>
               </div>
             )}
@@ -185,13 +188,17 @@ export const ConnectionMethodButton: FC<Props> = ({
               <div className="lk-flex lk-justify-center lk-mt-[8px]">
                 <Button tag="a" href={url} target="_blank">
                   <DownloadIcon />
-                  <span>Install Keplr</span>
+                  <span>
+                    <FormattedMessage id="connect_wallet_method_button_keplr_install" />
+                  </span>
                 </Button>
               </div>
             )}
           {!isNotInstalled && (
             <Alert className="lk-mt-[12px] lk-text-gray" isPlain={true}>
-              <p>Ledger is not yet supported.</p>
+              <p>
+                <FormattedMessage id="warning_ledger_not_support" />
+              </p>
             </Alert>
           )}
         </>

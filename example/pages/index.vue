@@ -184,6 +184,8 @@ export default {
       keplrInstallURLOverride: 'https://www.keplr.app/download',
       keplrInstallCTAPreset: 'fancy-banner',
       cosmostationDirectSignEnabled: true,
+
+      defaultLanguage: 'zh',
     });
     const session = this.connector.restoreSession();
     this.handleConnection(session);

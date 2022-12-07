@@ -1,0 +1,14 @@
+{
+  "connect_wallet_method_button_keplr_install": "安裝 Keplr",
+  "connect_wallet_method_button_keplr_install_prompt": "安裝 Keplr 來開始",
+  "connect_wallet_method_button_liker_land_app_install_prompt": "安裝 Liker Land App",
+  "connect_wallet_method_description_cosmostation": "使用 Cosmostation browser extension",
+  "connect_wallet_method_description_cosmostation_mobile": "使用 Cosmostation Mobile Wallet",
+  "connect_wallet_method_description_keplr": "使用 Keplr browser extension",
+  "connect_wallet_method_description_keplr_mobile": "使用 Keplr Mobile app 來掃描二維碼",
+  "connect_wallet_method_description_liker_land_app": "使用 Liker Land app 來掃描二維碼",
+  "connect_wallet_other_methods": "其他連接方法",
+  "connect_wallet_title": "連接錢包",
+  "warning_ledger_not_support": "暫不支援 Ledger。",
+  "warning_wallet_connect_mobile": "在手機上進行 WalletConnect 還在試驗性階段，請瀏覽電腦版本以獲最佳體驗。"
+}

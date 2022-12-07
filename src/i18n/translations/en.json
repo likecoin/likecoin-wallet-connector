@@ -1,0 +1,14 @@
+{
+  "connect_wallet_method_button_keplr_install_prompt": "Install Keplr to get started",
+  "connect_wallet_method_button_keplr_install": "Install Keplr",
+  "connect_wallet_method_button_liker_land_app_install_prompt": "Install Liker Land App",
+  "connect_wallet_method_description_cosmostation_mobile": "Using Cosmostation Mobile Wallet",
+  "connect_wallet_method_description_cosmostation": "Using Cosmostation browser extension",
+  "connect_wallet_method_description_keplr_mobile": "Scan QR code with Keplr Mobile app",
+  "connect_wallet_method_description_keplr": "Using Keplr browser extension",
+  "connect_wallet_method_description_liker_land_app": "Scan QR code with Liker Land app",
+  "connect_wallet_other_methods": "Other connection methods",
+  "connect_wallet_title": "Connect a wallet",
+  "warning_ledger_not_support": "Ledger is not yet supported.",
+  "warning_wallet_connect_mobile": "WalletConnect in mobile is an experimental feature, please visit this site on desktop for a better experience."
+}

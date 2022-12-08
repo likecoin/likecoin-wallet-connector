@@ -12,7 +12,8 @@
   "connect_wallet_other_methods": "Other connection methods",
   "connect_wallet_title": "Connect a wallet",
   "wallet_connect_button_open_app": "Launch App",
-  "wallet_connect_header_title_open_app": "Open App",
+  "wallet_connect_header_title_open_app": "Launch App",
+
   "wallet_connect_header_title_scan_qrcode": "Scan QR Code",
   "wallet_connect_hint_approve": "Please approve the connection request in the app by clicking the button below.",
   "wallet_connect_hint_scan_qrcode_cosmostation_mobile": "Please scan the QR code with Cosmostation Mobile Wallet app",

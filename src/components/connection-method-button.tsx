@@ -1,5 +1,5 @@
 import React, { FC, MouseEventHandler } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import classNames from 'classnames';
 
 import {
@@ -38,6 +38,7 @@ export const ConnectionMethodButton: FC<Props> = ({
   keplrInstallCTAPreset = 'origin',
   onPress,
 }) => {
+  const intl = useIntl();
   const isNotInstalled = React.useMemo(() => {
     switch (type) {
       case LikeCoinWalletConnectorMethodType.Keplr:
@@ -51,13 +52,17 @@ export const ConnectionMethodButton: FC<Props> = ({
 
   const description = React.useMemo(() => {
     if (isNotInstalled) {
-      return `You haven't installed.`;
+      return intl.formatMessage({
+        id: 'connect_wallet_method_button_hint_not_installed',
+      });
     }
     if (isMobile) {
-      return 'Click to open the app';
+      return intl.formatMessage({
+        id: 'connect_wallet_method_button_hint_click_to_open_app',
+      });
     }
     return defaultDescription;
-  }, [isNotInstalled, isMobile, defaultDescription]);
+  }, [isNotInstalled, isMobile, defaultDescription, intl]);
 
   const ButtonTag = isNotInstalled ? 'a' : 'button';
 

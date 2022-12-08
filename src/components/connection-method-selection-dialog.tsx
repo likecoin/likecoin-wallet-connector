@@ -43,7 +43,7 @@ const connectionMethodMap = [
   {
     type: LikeCoinWalletConnectorMethodType.Cosmostation,
     name: 'Cosmostation',
-    tier: 2,
+    tier: 1,
     isMobileOk: false,
     url:
       'https://chrome.google.com/webstore/detail/cosmostation/fpkhgmpbidmiogeglndfbkegfdlnajnf',

@@ -3,19 +3,19 @@ import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
 
 import messages from './translations';
 
-function normalizedLanguage(language?: string) {
+function normalizeLanguage(language?: string) {
   switch (language) {
-    case 'en':
-      return 'en';
-
     case 'zh':
-    default:
       return 'zh';
+
+    case 'en':
+    default:
+      return 'en';
   }
 }
 
 export function initIntl(language?: string) {
-  const locale = normalizedLanguage(language);
+  const locale = normalizeLanguage(language);
   const cache = createIntlCache();
   return createIntl(
     {

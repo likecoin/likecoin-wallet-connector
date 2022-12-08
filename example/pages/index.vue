@@ -185,7 +185,7 @@ export default {
       keplrInstallCTAPreset: 'fancy-banner',
       cosmostationDirectSignEnabled: true,
 
-      defaultLanguage: 'zh',
+      language: 'zh',
     });
     const session = this.connector.restoreSession();
     this.handleConnection(session);

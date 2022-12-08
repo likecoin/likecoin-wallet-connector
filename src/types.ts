@@ -50,7 +50,7 @@ export interface LikeCoinWalletConnectorConfig {
 
   availableMethods?: LikeCoinWalletConnectorMethodType[];
 
-  defaultLanguage?: string;
+  language?: string;
 }
 
 export type LikeCoinWalletConnectorOptions = Required<

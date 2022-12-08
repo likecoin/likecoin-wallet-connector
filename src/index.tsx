@@ -107,7 +107,7 @@ export class LikeCoinWalletConnector {
           ? !!options.isShowMobileWarning
           : true,
 
-      defaultLanguage: options.defaultLanguage || 'en',
+      language: options.language || 'en',
     };
 
     this.sessionAccounts = [];
@@ -126,13 +126,13 @@ export class LikeCoinWalletConnector {
   openConnectWalletModal = () => this.openConnectionMethodSelectionDialog();
 
   openConnectionMethodSelectionDialog = ({
-    language = this.options.defaultLanguage,
+    language = this.options.language,
   } = {}) => {
     if (this._isConnectionMethodSelectDialogOpen)
       return Promise.resolve(undefined);
 
-    if (this.options.defaultLanguage !== language) {
-      this.options.defaultLanguage = language;
+    if (this.options.language !== language) {
+      this.options.language = language;
     }
 
     return new Promise<LikeCoinWalletConnectorConnectionResponse>(resolve => {
@@ -162,13 +162,13 @@ export class LikeCoinWalletConnector {
   private openWalletConnectQRCodeDialog = (
     type: LikeCoinWalletConnectorMethodType,
     uri: string,
-    { language = this.options.defaultLanguage } = {}
+    { language = this.options.language } = {}
   ) => {
     if (this._isWalletConnectQRCodeDialogOpen)
       return Promise.resolve(undefined);
 
-    if (this.options.defaultLanguage !== language) {
-      this.options.defaultLanguage = language;
+    if (this.options.language !== language) {
+      this.options.language = language;
     }
 
     return new Promise<LikeCoinWalletConnectorConnectionResponse>(resolve => {

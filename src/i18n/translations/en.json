@@ -1,5 +1,5 @@
 {
-  "connect_wallet_method_button_hint_click_to_open_app": "Click to open the app",
+  "connect_wallet_method_button_hint_click_to_open_app": "Click to connect",
   "connect_wallet_method_button_hint_not_installed": "You haven't installed.",
   "connect_wallet_method_button_keplr_install": "Install Keplr",
   "connect_wallet_method_button_keplr_install_prompt": "Install Keplr to get started",
@@ -11,7 +11,7 @@
   "connect_wallet_method_description_liker_land_app": "Scan QR code with Liker Land app",
   "connect_wallet_other_methods": "Other connection methods",
   "connect_wallet_title": "Connect a wallet",
-  "wallet_connect_button_open_app": "Open App",
+  "wallet_connect_button_open_app": "Launch App",
   "wallet_connect_header_title_open_app": "Open App",
   "wallet_connect_header_title_scan_qrcode": "Scan QR Code",
   "wallet_connect_hint_approve": "Please approve the connection request in the app by clicking the button below.",

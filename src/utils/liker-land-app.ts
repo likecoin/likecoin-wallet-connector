@@ -17,9 +17,11 @@ import {
 
 import { convertWalletConnectAccountResponse } from './wallet';
 
+const LIKER_LAND_APP_USER_AGENT_KEY = 'LikeCoinApp';
+
 // Ref: https://github.com/likecoin/likecoin-app/blob/b1109871821b20228bf54cf736c032a8e9fe6ed0/app/services/api/api-config.ts#L6-L7
 export const checkIsInLikerLandAppInAppBrowser = () =>
-  navigator.userAgent.includes('LikeCoinApp');
+  navigator.userAgent.includes(LIKER_LAND_APP_USER_AGENT_KEY);
 
 export function getLikerLandAppWCConnector(
   options: Partial<IWalletConnectOptions> = {}
@@ -33,7 +35,7 @@ export function getLikerLandAppWCConnector(
     // Ref: https://github.com/osmosis-labs/osmosis-frontend/blob/49bede85f9a772fc40ffcdcd03d193b4d8178179/packages/web/hooks/use-keplr/context.tsx#L133
     // @ts-ignore
     wc._clientMeta = {
-      name: 'Liker Land App (in-app)',
+      name: LIKER_LAND_APP_USER_AGENT_KEY,
     };
   }
 

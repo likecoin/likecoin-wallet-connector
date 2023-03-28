@@ -62,7 +62,8 @@ export type LikeCoinWalletConnectorOptions = Required<
 export interface LikeCoinWalletConnectorMethod {
   name: string;
   type: LikeCoinWalletConnectorMethodType;
-  tier: number;
+  defaultTier: number;
+  hasDetected: boolean;
   isMobileOk: boolean;
   url: string;
   description: string;

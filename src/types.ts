@@ -63,7 +63,7 @@ export interface LikeCoinWalletConnectorMethod {
   name: string;
   type: LikeCoinWalletConnectorMethodType;
   defaultTier: number;
-  hasDetected: boolean;
+  isInstalled: boolean;
   isMobileOk: boolean;
   url: string;
   description: string;

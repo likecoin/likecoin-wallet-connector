@@ -19,7 +19,7 @@ const connectionMethodMap = [
     type: LikeCoinWalletConnectorMethodType.Keplr,
     name: 'Keplr',
     defaultTier: 1,
-    hasDetected: false,
+    isInstalled: false,
     isMobileOk: false,
     url:
       'https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap',
@@ -29,7 +29,7 @@ const connectionMethodMap = [
     type: LikeCoinWalletConnectorMethodType.KeplrMobile,
     name: 'Keplr Mobile',
     defaultTier: 2,
-    hasDetected: false,
+    isInstalled: false,
     isMobileOk: true,
     url: 'https://keplr.app/app',
     description: 'connect_wallet_method_description_keplr_mobile',
@@ -38,7 +38,7 @@ const connectionMethodMap = [
     type: LikeCoinWalletConnectorMethodType.LikerId,
     name: 'Liker ID',
     defaultTier: 2,
-    hasDetected: false,
+    isInstalled: false,
     isMobileOk: true,
     url: 'https://liker.land/getapp',
     description: 'connect_wallet_method_description_liker_land_app',
@@ -47,7 +47,7 @@ const connectionMethodMap = [
     type: LikeCoinWalletConnectorMethodType.Cosmostation,
     name: 'Cosmostation',
     defaultTier: 1,
-    hasDetected: false,
+    isInstalled: false,
     isMobileOk: false,
     url:
       'https://chrome.google.com/webstore/detail/cosmostation/fpkhgmpbidmiogeglndfbkegfdlnajnf',
@@ -57,7 +57,7 @@ const connectionMethodMap = [
     type: LikeCoinWalletConnectorMethodType.CosmostationMobile,
     name: 'Cosmostation App',
     defaultTier: 2,
-    hasDetected: false,
+    isInstalled: false,
     isMobileOk: true,
     url: 'https://www.cosmostation.io/wallet',
     description: 'connect_wallet_method_description_cosmostation_mobile',
@@ -118,28 +118,28 @@ export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialog
 
         switch (type) {
           case LikeCoinWalletConnectorMethodType.Keplr:
-            method.hasDetected = !!window.keplr;
+            method.isInstalled = !!window.keplr;
             break;
           case LikeCoinWalletConnectorMethodType.Cosmostation:
-            method.hasDetected = !!window.cosmostation;
+            method.isInstalled = !!window.cosmostation;
             break;
           default:
-            method.hasDetected = false;
+            method.isInstalled = false;
             break;
         }
         return method;
       });
-    const hasDetectedWallet = filteredMethods.some(method => method.hasDetected);
-    const getTier = (method: LikeCoinWalletConnectorMethod, hasDetectedWallet: boolean) => {
-      if (hasDetectedWallet) {
-        return method.hasDetected ? 1 : 2;
+    const hasInstalledWallet = filteredMethods.some(method => method.isInstalled);
+    const getTier = (method: LikeCoinWalletConnectorMethod) => {
+      if (hasInstalledWallet) {
+        return method.isInstalled ? 1 : 2;
       }
       // if none of wallet is detected, fallback to default tier
       return method.defaultTier;
     };
     const tieredMethods = filteredMethods
       .reduce((tieredMethods, method) => {
-        const tier = getTier(method, hasDetectedWallet);
+        const tier = getTier(method);
         if (!tieredMethods[tier]) {
           tieredMethods[tier] = new Array<
             LikeCoinWalletConnectorMethod

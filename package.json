@@ -81,6 +81,8 @@
     "@walletconnect/client": "^1.8.0",
     "@walletconnect/types": "^1.8.0",
     "@walletconnect/utils": "^1.8.0",
+    "@web3auth/base": "^5.1.0",
+    "@web3auth/modal": "^5.1.1",
     "classnames": "^2.3.1",
     "cosmjs-types": "^0.5.1",
     "qrcode.react": "^3.1.0",

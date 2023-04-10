@@ -40,6 +40,10 @@ import {
   listenLeapKeyStoreChange,
   removeLeapKeyStoreChangeListener,
 } from './utils/leap';
+import {
+  initWeb3Auth,
+  disconnectWeb3Auth,
+} from './utils/web3auth';
 import { deserializePublicKey, serializePublicKey } from './utils/wallet';
 
 import {
@@ -131,6 +135,10 @@ export class LikeCoinWalletConnector {
       language: options.language || 'en',
 
       onEvent: options.onEvent || (() => {}),
+
+      blockExplorerURL: options.blockExplorerURL || 'https://mintscan.io/likecoin',
+      web3AuthClientId: options.web3AuthClientId || '',
+      web3AuthNetwork: options.web3AuthNetwork || 'mainnet',
     };
 
     this.sessionAccounts = [];
@@ -296,6 +304,10 @@ export class LikeCoinWalletConnector {
           await onWalletConnectV2Disconnect();
           break;
 
+        case LikeCoinWalletConnectorMethodType.Web3Auth:
+          await disconnectWeb3Auth();
+          break;
+
         default:
           break;
       }
@@ -389,6 +401,10 @@ export class LikeCoinWalletConnector {
           this.sessionMethod,
           this.sessionAccounts
         );
+        break;
+
+      case LikeCoinWalletConnectorMethodType.Web3Auth:
+        initiator = initWeb3Auth(this.options);
         break;
 
       default:

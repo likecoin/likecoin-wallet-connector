@@ -32,6 +32,10 @@ import {
   getLikerLandAppWCConnector,
   initLikerLandApp,
 } from './utils/liker-land-app';
+import {
+  initWeb3Auth,
+  disconnectWeb3Auth,
+} from './utils/web3auth';
 import { deserializePublicKey, serializePublicKey } from './utils/wallet';
 
 import {
@@ -111,6 +115,9 @@ export class LikeCoinWalletConnector {
           : true,
 
       language: options.language || 'en',
+      blockExplorerURL: options.blockExplorerURL || 'https://mintscan.io/likecoin',
+      web3authClientId: options.web3authClientId || '',
+      web3AuthNetwork: options.web3AuthNetwork || 'mainnet',
     };
 
     this.sessionAccounts = [];
@@ -246,6 +253,10 @@ export class LikeCoinWalletConnector {
           });
           break;
 
+        case LikeCoinWalletConnectorMethodType.Web3Auth:
+          await disconnectWeb3Auth();
+          break;
+          
         default:
           break;
       }
@@ -309,6 +320,10 @@ export class LikeCoinWalletConnector {
         );
         break;
 
+      case LikeCoinWalletConnectorMethodType.Web3Auth:
+        initiator = initWeb3Auth(this.options);
+        break;
+        
       default:
         this._accountChangeListener = undefined;
         throw new Error('METHOD_NOT_SUPPORTED');

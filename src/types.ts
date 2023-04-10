@@ -7,6 +7,7 @@ export enum LikeCoinWalletConnectorMethodType {
   Cosmostation = 'cosmostation',
   CosmostationMobile = 'cosmostation-mobile',
   LikerId = 'liker-id',
+  Web3Auth = 'web3auth',
 }
 
 export type KeplrInstallCTAPreset = 'origin' | 'simple-banner' | 'fancy-banner';
@@ -53,6 +54,10 @@ export interface LikeCoinWalletConnectorConfig {
   availableMethods?: LikeCoinWalletConnectorMethodType[];
 
   language?: string;
+
+  blockExplorerURL?: string;
+  web3authClientId?: string;
+  web3AuthNetwork?: string;
 }
 
 export type LikeCoinWalletConnectorOptions = Required<

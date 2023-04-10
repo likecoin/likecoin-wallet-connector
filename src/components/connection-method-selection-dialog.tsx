@@ -62,6 +62,15 @@ const connectionMethodMap = [
     url: 'https://www.cosmostation.io/wallet',
     description: 'connect_wallet_method_description_cosmostation_mobile',
   },
+  {
+    type: LikeCoinWalletConnectorMethodType.Web3Auth,
+    name: 'Web3Auth',
+    defaultTier: 2,
+    isInstalled: false,
+    isMobileOk: true,
+    url: 'https://dashboard.web3auth.io/',
+    description: 'connect_wallet_method_description_web3auth',
+  },
 ].reduce(
   (map, method) => {
     map[method.type] = method;

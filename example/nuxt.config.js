@@ -16,6 +16,12 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  babel: {
+    plugins: [
+      '@babel/plugin-proposal-optional-chaining',
+      '@babel/plugin-proposal-nullish-coalescing-operator',
+    ],
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -40,5 +46,12 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+    transpile: [
+      /@chainsafe/,
+      /@ethereumjs/,
+      /@toruslabs/,
+      '@solana/web3.js',
+      '@web3auth/ethereum-provider',
+    ],
+  },
 }

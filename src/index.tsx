@@ -116,7 +116,7 @@ export class LikeCoinWalletConnector {
 
       language: options.language || 'en',
       blockExplorerURL: options.blockExplorerURL || 'https://mintscan.io/likecoin',
-      web3authClientId: options.web3authClientId || '',
+      web3AuthClientId: options.web3AuthClientId || '',
       web3AuthNetwork: options.web3AuthNetwork || 'mainnet',
     };
 

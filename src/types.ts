@@ -56,7 +56,7 @@ export interface LikeCoinWalletConnectorConfig {
   language?: string;
 
   blockExplorerURL?: string;
-  web3authClientId?: string;
+  web3AuthClientId?: string;
   web3AuthNetwork?: string;
 }
 

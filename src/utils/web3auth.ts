@@ -14,7 +14,7 @@ export async function initWeb3Auth(
   options: LikeCoinWalletConnectorOptions,
 ): Promise<LikeCoinWalletConnectorInitResponse> {
   const web3AuthOptions = {
-    clientId: options.web3authClientId,
+    clientId: options.web3AuthClientId,
     chainConfig: {
       chainNamespace: CHAIN_NAMESPACES.OTHER,
       chainId: options.chainId,

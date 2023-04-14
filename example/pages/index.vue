@@ -175,6 +175,7 @@ export default {
         LikeCoinWalletConnectorMethodType.LikerId,
         LikeCoinWalletConnectorMethodType.CosmostationMobile,
         LikeCoinWalletConnectorMethodType.KeplrMobile,
+        LikeCoinWalletConnectorMethodType.Web3Auth,
       ],
       keplrSignOptions: {
         disableBalanceCheck: true,
@@ -186,6 +187,8 @@ export default {
       cosmostationDirectSignEnabled: true,
 
       language: 'zh',
+      web3AuthNetwork: 'mainnet',
+      web3AuthClientId: 'clientId',
     });
     const session = this.connector.restoreSession();
     this.handleConnection(session);

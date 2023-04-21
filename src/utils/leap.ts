@@ -66,7 +66,7 @@ export async function initLeap(
         },
       ],
       coinType: options.coinType,
-      features: ['ibc-go', 'ibc-transfer', 'no-legacy-stdTx', 'stargate'],
+      features: ['ibc-go', 'ibc-transfer'],
 
       image: 'https://static.like.co/edm/likecoin-logo.png',
       theme: {

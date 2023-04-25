@@ -10,6 +10,7 @@
   "connect_wallet_method_description_keplr": "Using Keplr browser extension",
   "connect_wallet_method_description_keplr_mobile": "Scan QR code with Keplr Mobile app",
   "connect_wallet_method_description_leap": "Use Leap browser extension",
+  "connect_wallet_method_description_leap_mobile": "Use Leap Mobile app",
   "connect_wallet_method_description_liker_land_app": "Scan QR code with Liker Land app",
   "connect_wallet_other_methods": "Other connection methods",
   "connect_wallet_title": "Connect a wallet",
@@ -19,6 +20,7 @@
   "wallet_connect_hint_approve": "Please approve the connection request in the app by clicking the button below.",
   "wallet_connect_hint_scan_qrcode_cosmostation_mobile": "Please scan the QR code with Cosmostation Mobile Wallet app",
   "wallet_connect_hint_scan_qrcode_keplr_mobile": "Please scan the QR code with Keplr Mobile Wallet app",
+  "wallet_connect_hint_scan_qrcode_leap_mobile": "Please scan the QR code with Leap Mobile Wallet app",
   "wallet_connect_hint_scan_qrcode_liker_land_app": "Please scan the QR code with Liker Land app",
   "warning_ledger_not_support": "Ledger is not yet supported.",
   "warning_wallet_connect_mobile": "WalletConnect in mobile is an experimental feature, please visit this site on desktop for a better experience."

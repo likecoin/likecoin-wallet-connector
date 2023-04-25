@@ -109,6 +109,11 @@ export const WalletConnectQRCodeDialog: FC<WalletConnectQRCodeDialogProps> = ({
           id: 'wallet_connect_hint_scan_qrcode_liker_land_app',
         });
 
+      case LikeCoinWalletConnectorMethodType.LeapMobile:
+        return intl.formatMessage({
+          id: 'wallet_connect_hint_scan_qrcode_leap_mobile',
+        });
+
       default:
         return '';
     }

@@ -230,6 +230,7 @@ export class LikeCoinWalletConnector {
           break;
 
         case LikeCoinWalletConnectorMethodType.KeplrMobile:
+        case LikeCoinWalletConnectorMethodType.LeapMobile:
           wcConnector = getKeplrMobileWCConnector({
             bridge: this.options.keplrMobileWCBridge,
           });
@@ -286,9 +287,11 @@ export class LikeCoinWalletConnector {
         break;
 
       case LikeCoinWalletConnectorMethodType.KeplrMobile:
+      case LikeCoinWalletConnectorMethodType.LeapMobile:
+        // TODO: Proper implementation for Leap Mobile
         initiator = initKeplrMobile(
           this.options,
-          this.getWCQRCodeDialog(LikeCoinWalletConnectorMethodType.KeplrMobile),
+          this.getWCQRCodeDialog(methodType),
           this.sessionMethod,
           this.sessionAccounts
         );

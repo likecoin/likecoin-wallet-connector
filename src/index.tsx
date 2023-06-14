@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import { AccountData } from '@cosmjs/proto-signing';
 import WalletConnect from '@walletconnect/client';
-import { IQRCodeModal } from '@walletconnect/types';
+import { IQRCodeModal } from '@walletconnect/legacy-types';
 import EventEmitter from 'events';
 
 import { ConnectionMethodSelectionDialog } from './components/connection-method-selection-dialog';
@@ -18,6 +18,10 @@ import {
   getCosmostationMobileWCConnector,
   initCosmostationMobile,
 } from './utils/cosmostation-mobile';
+import {
+  initWalletConnectV2Connector,
+  onWalletConnectV2Disconnect,
+} from './utils/wallet-connect-v2';
 import {
   initKeplr,
   listenKeplrKeyStoreChange,
@@ -101,6 +105,7 @@ export class LikeCoinWalletConnector {
         LikeCoinWalletConnectorMethodType.KeplrMobile,
         LikeCoinWalletConnectorMethodType.LikerId,
         LikeCoinWalletConnectorMethodType.Cosmostation,
+        LikeCoinWalletConnectorMethodType.WalletConnectV2,
       ],
       keplrSignOptions: options.keplrSignOptions || {},
       keplrMobileWCBridge: options.keplrMobileWCBridge || WC_BRIGDE,
@@ -110,6 +115,13 @@ export class LikeCoinWalletConnector {
       cosmostationAppWCBridge: options.cosmostationAppWCBridge || WC_BRIGDE,
       cosmostationDirectSignEnabled:
         options.cosmostationDirectSignEnabled || false,
+      walletConnectProjectId: options.walletConnectProjectId || '',
+      walletConnectMetadata: options.walletConnectMetadata || {
+        description: 'LikeCoin Wallet Connect Lib',
+        url: 'https://like.co',
+        icons: ['https://like.co/logo.png'],
+        name: 'LikeCoin Wallet Connect',
+      },
       isShowMobileWarning:
         options.isShowMobileWarning !== undefined
           ? !!options.isShowMobileWarning
@@ -256,6 +268,10 @@ export class LikeCoinWalletConnector {
           removeLeapKeyStoreChangeListener(this._accountChangeListener);
           break;
 
+        case LikeCoinWalletConnectorMethodType.WalletConnectV2:
+          await onWalletConnectV2Disconnect();
+          break;
+
         default:
           break;
       }
@@ -327,6 +343,14 @@ export class LikeCoinWalletConnector {
 
       case LikeCoinWalletConnectorMethodType.Leap:
         initiator = initLeap(this.options);
+        break;
+
+      case LikeCoinWalletConnectorMethodType.WalletConnectV2:
+        initiator = initWalletConnectV2Connector(
+          this.options,
+          this.sessionMethod,
+          this.sessionAccounts,
+        );
         break;
 
       default:

@@ -229,6 +229,7 @@ export default {
         LikeCoinWalletConnectorMethodType.Leap,
         LikeCoinWalletConnectorMethodType.CosmostationMobile,
         LikeCoinWalletConnectorMethodType.KeplrMobile,
+        LikeCoinWalletConnectorMethodType.WalletConnectV2,
       ],
       keplrSignOptions: {
         disableBalanceCheck: true,
@@ -238,7 +239,13 @@ export default {
       keplrInstallURLOverride: 'https://www.keplr.app/download',
       keplrInstallCTAPreset: 'fancy-banner',
       cosmostationDirectSignEnabled: true,
-
+      walletConnectProjectId: '',
+      walletConnectMetadata: {
+        description: 'LikeCoin Wallet Connect Example',
+        url: 'https://like.co',
+        icons: ['https://like.co/logo.png'],
+        name: 'LikeCoin Wallet Connect',
+      },
       language: 'zh',
     });
     const session = this.connector.restoreSession();

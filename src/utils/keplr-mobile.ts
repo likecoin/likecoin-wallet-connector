@@ -2,7 +2,7 @@ import { OfflineAminoSigner } from '@cosmjs/amino';
 import { AccountData } from '@cosmjs/proto-signing';
 import { KeplrSignOptions } from '@keplr-wallet/types';
 import WalletConnect from '@walletconnect/client';
-import { IQRCodeModal, IWalletConnectOptions } from '@walletconnect/types';
+import { IQRCodeModal, IWalletConnectOptions } from '@walletconnect/legacy-types';
 import { payloadId } from '@walletconnect/utils';
 
 import {

@@ -239,7 +239,8 @@ export default {
       keplrInstallURLOverride: 'https://www.keplr.app/download',
       keplrInstallCTAPreset: 'fancy-banner',
       cosmostationDirectSignEnabled: true,
-      walletConnectProjectId: '',
+      // example project id
+      walletConnectProjectId: '314eb526d846240aaa5e82cedd9788bf',
       walletConnectMetadata: {
         description: 'LikeCoin Wallet Connect Example',
         url: 'https://like.co',

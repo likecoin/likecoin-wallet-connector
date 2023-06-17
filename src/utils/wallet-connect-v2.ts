@@ -9,6 +9,7 @@ import {
 } from '@cosmjs/proto-signing';
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
 import {
+  SessionTypes,
   SignClientTypes,
 } from '@walletconnect/types';
 
@@ -19,7 +20,7 @@ import {
 } from '../types';
 import { SignClient } from '@walletconnect/sign-client/dist/types/client';
 
-let topic: string;
+let session: SessionTypes.Struct | null = null;
 let client: SignClient | null = null;
 
 export async function getWalletConnectV2Connector(
@@ -44,47 +45,65 @@ export async function initWalletConnectV2Connector(
     projectId: options.walletConnectProjectId,
     metadata: options.walletConnectMetadata,
   });
-
+  const lastKeyIndex = wcConnector.session.getAll().length - 1
+  // TODO: allow selecting sessions
+  if (lastKeyIndex > -1) {
+    const lastSession = wcConnector.session.getAll()[lastKeyIndex]
+    if (lastSession) session = lastSession
+  }
   let accounts: AccountData[] = [];
   if (
-    client && topic &&
+    client && session &&
     sessionMethod === LikeCoinWalletConnectorMethodType.WalletConnectV2 &&
     sessionAccounts.length > 0
   ) {
     accounts = sessionAccounts;
   } else {
-
+    await onWalletConnectV2Disconnect(session);
     const walletConnectModal = new WalletConnectModal({
       projectId: options.walletConnectProjectId,
       standaloneChains: [`cosmos:${options.chainId}`],
       themeMode: 'light', // cosmostation doesn't scan dark theme
       walletConnectVersion: 2,
     });
-    const { uri, approval } = await wcConnector.connect({
-      pairingTopic: undefined, // TODO: recover sessions
-      requiredNamespaces: {
-        cosmos: {
-          methods: ['cosmos_getAccounts', 'cosmos_signDirect', 'cosmos_signAmino'],
-          chains: [`cosmos:${options.chainId}`],
-          events: [],
+    let connectRes;
+    try {
+      connectRes = await wcConnector.connect({
+        pairingTopic: session?.topic,
+        requiredNamespaces: {
+          cosmos: {
+            methods: ['cosmos_getAccounts', 'cosmos_signDirect', 'cosmos_signAmino'],
+            chains: [`cosmos:${options.chainId}`],
+            events: [],
+          },
         },
-      },
-    });
-
+      });
+    } catch (err) {
+      if (session) {
+        console.error(err)
+        session = null;
+        connectRes = await wcConnector.connect({
+          requiredNamespaces: {
+            cosmos: {
+              methods: ['cosmos_getAccounts', 'cosmos_signDirect', 'cosmos_signAmino'],
+              chains: [`cosmos:${options.chainId}`],
+              events: [],
+            },
+          },
+        });
+      } else {
+        throw err
+      }
+    }
+    const { uri, approval } = connectRes;
     if (uri) {
       walletConnectModal.openModal({ uri });
     }
 
-    let session = await approval();
+    session = await approval();
 
-    wcConnector.on('session_update', ({ topic, params }) => {
-      const { namespaces } = params
-      const _session = wcConnector.session.get(topic)
-      const updatedSession = { ..._session, namespaces }
-      session = updatedSession
-    })
     const accountsInBase64: any[] = await wcConnector.request({
-      topic: session!.topic,
+      topic: session.topic,
       chainId: `cosmos:${options.chainId}`,
       request: {
         method: "cosmos_getAccounts",
@@ -102,8 +121,6 @@ export async function initWalletConnectV2Connector(
         pubkey: Buffer.from(pubkey, isHex ? 'hex' : 'base64'),
       };
     })
-    topic = session!.topic;
-    console.log(accounts);
     walletConnectModal.closeModal()
   }
   const offlineSigner: OfflineSigner = {
@@ -113,7 +130,7 @@ export async function initWalletConnectV2Connector(
       signDoc,
     ) => {
       const result = await wcConnector.request({
-        topic,
+        topic: session!.topic,
         chainId: `cosmos:${options.chainId}`,
         request: {
           method: "cosmos_signAmino",
@@ -130,7 +147,7 @@ export async function initWalletConnectV2Connector(
         signed: signedInJSON,
         signature,
       } = await wcConnector.request({
-        topic,
+        topic: session!.topic,
         chainId: `cosmos:${options.chainId}`,
         request: {
           method: "cosmos_signDirect",
@@ -153,11 +170,30 @@ export async function initWalletConnectV2Connector(
   };
 }
 
-export async function onWalletConnectV2Disconnect() {
+export async function listenWalletConnectV2StoreChange(
+  handler?: EventListenerOrEventListenerObject
+) {
   const client = await getWalletConnectV2Connector()
-  client.disconnect({ topic, reason: {
-    code: 0,
-    message: 'USER_DISCONNECTED',
-  } })
+  client.on('session_update', ({ topic, params }) => {
+    const { namespaces } = params
+    const _session = client.session.get(topic)
+    const updatedSession = { ..._session, namespaces } as SessionTypes.Struct
+    session = updatedSession
+    if (typeof handler === 'function') handler(new Event('session_update'));
+  })
+  client.on('session_delete', () => {
+    session = null
+    if (typeof handler === 'function') handler(new Event('session_delete'));
+  })
+}
+
+export async function onWalletConnectV2Disconnect(targetSession = session) {
+  if (targetSession) {
+    const client = await getWalletConnectV2Connector()
+    client.disconnect({ topic: targetSession.topic, reason: {
+      code: 0,
+      message: 'USER_DISCONNECTED',
+    } })
+  }
 }
 

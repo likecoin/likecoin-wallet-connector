@@ -21,6 +21,7 @@ import {
 import {
   initWalletConnectV2Connector,
   onWalletConnectV2Disconnect,
+  listenWalletConnectV2StoreChange,
 } from './utils/wallet-connect-v2';
 import {
   initKeplr,
@@ -371,6 +372,10 @@ export class LikeCoinWalletConnector {
         listenLeapKeyStoreChange(this._accountChangeListener);
         break;
 
+      case LikeCoinWalletConnectorMethodType.WalletConnectV2:
+        listenWalletConnectV2StoreChange(this._accountChangeListener);
+        break;
+
       default:
         break;
     }
@@ -456,6 +461,9 @@ export class LikeCoinWalletConnector {
           listenKeplrKeyStoreChange(this._accountChangeListener);
           break;
 
+        case LikeCoinWalletConnectorMethodType.WalletConnectV2:
+          listenWalletConnectV2StoreChange(this._accountChangeListener);
+          break;
         default:
           break;
       }

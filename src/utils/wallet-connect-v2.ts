@@ -9,6 +9,9 @@ import {
 } from '@cosmjs/proto-signing';
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
 import {
+  isMobile as isMobileDevice,
+} from '@walletconnect/browser-utils';
+import {
   SessionTypes,
   SignClientTypes,
 } from '@walletconnect/types';
@@ -22,6 +25,7 @@ import { SignClient } from '@walletconnect/sign-client/dist/types/client';
 
 let session: SessionTypes.Struct | null = null;
 let client: SignClient | null = null;
+let realAccounts: AccountData[] | null = null;
 
 export async function getWalletConnectV2Connector(
   options: SignClientTypes.Options = {}
@@ -52,6 +56,29 @@ export async function initWalletConnectV2Connector(
     if (lastSession) session = lastSession
   }
   let accounts: AccountData[] = [];
+
+  const getAccounts = async () => {
+    const accs = await wcConnector.request({
+      topic: session!.topic,
+      chainId: `cosmos:${options.chainId}`,
+      request: {
+        method: "cosmos_getAccounts",
+        params: {},
+      },
+    }).then((acc) => (acc as any[]).map(a => {
+      const {
+        pubkey, ...accounts
+      } = a;
+      const isHex = pubkey.length === 66 && pubkey.match(/[0-9A-Fa-f]{6}/g);
+      return {
+        ...accounts,
+        pubkey: Buffer.from(pubkey, isHex ? 'hex' : 'base64'),
+      };
+    }));
+    realAccounts = accs;
+    return accs;
+  };
+
   if (
     client && session &&
     sessionMethod === LikeCoinWalletConnectorMethodType.WalletConnectV2 &&
@@ -102,29 +129,21 @@ export async function initWalletConnectV2Connector(
 
     session = await approval();
 
-    const accountsInBase64: any[] = await wcConnector.request({
-      topic: session.topic,
-      chainId: `cosmos:${options.chainId}`,
-      request: {
-        method: "cosmos_getAccounts",
-        params: {},
-      },
-    });
-    accounts = accountsInBase64.map(a => {
-      const {
-        pubkey,
-        ...accounts
-      } = a
-      const isHex = pubkey.length === 66 && pubkey.match(/[0-9A-Fa-f]{6}/g);
-      return {
-        ...accounts,
-        pubkey: Buffer.from(pubkey, isHex ? 'hex' : 'base64'),
-      };
-    })
+    if (!isMobileDevice()) {
+      accounts = await getAccounts();
+    } else {
+      accounts = Object.values(session.namespaces)
+        .map((namespace) => namespace.accounts)
+        .flat()
+        .map(address => ({
+          address: address.split(':')[2], algo: 'secp256k1', pubkey: Uint8Array.from([]),
+        }));
+    }
+
     walletConnectModal.closeModal()
   }
   const offlineSigner: OfflineSigner = {
-    getAccounts: () => Promise.resolve(accounts),
+    getAccounts: async() => realAccounts ? Promise.resolve(realAccounts) : await getAccounts(),
     signAmino: async (
       signerBech32Address,
       signDoc,

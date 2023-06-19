@@ -28,7 +28,7 @@ let client: SignClient | null = null;
 let realAccounts: AccountData[] | null = null;
 
 export async function getWalletConnectV2Connector(
-  options: SignClientTypes.Options = {}
+  options: SignClientTypes.Options
 ) {
   if (!client) {
     client = await Client.init({
@@ -86,7 +86,6 @@ export async function initWalletConnectV2Connector(
   ) {
     accounts = sessionAccounts;
   } else {
-    await onWalletConnectV2Disconnect(session);
     const walletConnectModal = new WalletConnectModal({
       projectId: options.walletConnectProjectId,
       standaloneChains: [`cosmos:${options.chainId}`],
@@ -197,12 +196,14 @@ export async function initWalletConnectV2Connector(
 export async function listenWalletConnectV2StoreChange(
   handler?: EventListenerOrEventListenerObject
 ) {
-  const client = await getWalletConnectV2Connector()
+  if (!client) return;
   client.on('session_update', ({ topic, params }) => {
     const { namespaces } = params
-    const _session = client.session.get(topic)
-    const updatedSession = { ..._session, namespaces } as SessionTypes.Struct
-    session = updatedSession
+    if (client) {
+      const _session = client.session.get(topic)
+      const updatedSession = { ..._session, namespaces } as SessionTypes.Struct
+      session = updatedSession
+    }
     if (typeof handler === 'function') handler(new Event('session_update'));
   })
   client.on('session_delete', () => {
@@ -213,7 +214,7 @@ export async function listenWalletConnectV2StoreChange(
 
 export async function onWalletConnectV2Disconnect(targetSession = session) {
   if (targetSession) {
-    const client = await getWalletConnectV2Connector()
+    if (!client) return;
     client.disconnect({ topic: targetSession.topic, reason: {
       code: 0,
       message: 'USER_DISCONNECTED',

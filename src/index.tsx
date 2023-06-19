@@ -460,10 +460,6 @@ export class LikeCoinWalletConnector {
         case LikeCoinWalletConnectorMethodType.Keplr:
           listenKeplrKeyStoreChange(this._accountChangeListener);
           break;
-
-        case LikeCoinWalletConnectorMethodType.WalletConnectV2:
-          listenWalletConnectV2StoreChange(this._accountChangeListener);
-          break;
         default:
           break;
       }

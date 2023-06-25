@@ -91,6 +91,19 @@ export async function initWalletConnectV2Connector(
       standaloneChains: [`cosmos:${options.chainId}`],
       themeMode: 'light', // cosmostation doesn't scan dark theme
       walletConnectVersion: 2,
+      mobileWallets: [
+        {
+          id: 'likerland',
+          name: 'LikerLand',
+          links: {
+            native: 'oice://wc',
+            universal: '',
+          },
+        },
+      ],
+      walletImages: {
+        likerland: "https://liker.land/logo.png",
+      },
       explorerRecommendedWalletIds: [
         '6adb6082c909901b9e7189af3a4a0223102cd6f8d5c39e39f3d49acb92b578bb', // keplr
         'feb6ff1fb426db18110f5a80c7adbde846d0a7e96b2bc53af4b73aaf32552bea', // cosmostation

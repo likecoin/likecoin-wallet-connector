@@ -89,7 +89,7 @@ export async function initWalletConnectV2Connector(
           id: 'likerland',
           name: 'LikerLand',
           links: {
-            native: 'oice://wc',
+            native: 'com.oice://wc',
             universal: '',
           },
         },

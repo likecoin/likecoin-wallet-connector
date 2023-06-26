@@ -15,7 +15,7 @@ import {
 } from './utils/cosmostation';
 import {
   checkIsInCosmostationMobileInAppBrowser,
-  getCosmostationMobileWCConnector,
+  onCosmostationMobileDisconnect,
   initCosmostationMobile,
 } from './utils/cosmostation-mobile';
 import {
@@ -248,9 +248,7 @@ export class LikeCoinWalletConnector {
           break;
 
         case LikeCoinWalletConnectorMethodType.CosmostationMobile:
-          wcConnector = getCosmostationMobileWCConnector({
-            bridge: this.options.cosmostationAppWCBridge,
-          });
+          await onCosmostationMobileDisconnect();
           break;
 
         case LikeCoinWalletConnectorMethodType.LikerId:

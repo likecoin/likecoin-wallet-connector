@@ -343,7 +343,7 @@ export class LikeCoinWalletConnector {
         initiator = initWalletConnectV2Connector(
           this.options,
           this.sessionMethod,
-          this.sessionAccounts,
+          this.sessionAccounts
         );
         break;
 

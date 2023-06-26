@@ -19,7 +19,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '../dist/style.css',
+    '@likecoin/wallet-connector/dist/style.css',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -44,6 +44,7 @@ export default {
     transpile: [
       '@walletconnect',
       '@web3modal',
+      '@likecoin/wallet-connector'
     ],
   }
 }

@@ -167,7 +167,7 @@ import {
   SigningStargateClient,
 } from '@cosmjs/stargate';
 
-import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethodType } from '../../dist';
+import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethodType } from '@likecoin/wallet-connector';
 
 export default {
   data() {

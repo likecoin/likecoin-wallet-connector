@@ -28,10 +28,7 @@ import {
   listenKeplrKeyStoreChange,
   removeKeplrKeyStoreChangeListener,
 } from './utils/keplr';
-import {
-  getKeplrMobileWCConnector,
-  initKeplrMobile,
-} from './utils/keplr-mobile';
+import { onKeplrMobileDisconnect, initKeplrMobile } from './utils/keplr-mobile';
 import {
   checkIsInLikerLandAppInAppBrowser,
   getLikerLandAppWCConnector,
@@ -243,9 +240,7 @@ export class LikeCoinWalletConnector {
           break;
 
         case LikeCoinWalletConnectorMethodType.KeplrMobile:
-          wcConnector = getKeplrMobileWCConnector({
-            bridge: this.options.keplrMobileWCBridge,
-          });
+          await onKeplrMobileDisconnect();
           break;
 
         case LikeCoinWalletConnectorMethodType.Cosmostation:

@@ -35,14 +35,16 @@ export async function initKeplrMobile(
   });
   client = wcConnector;
   // TODO: allow selecting sessions
-  const currentSessions = wcConnector.session.getAll();
-  const reuseSession = currentSessions
-    .reverse()
-    .find((session: SessionTypes.Struct) => {
-      return session.peer.metadata.name.includes('Keplr');
-    });
-  if (reuseSession) {
-    session = reuseSession;
+  if (!session) {
+    const currentSessions = wcConnector.session.getAll();
+    const reuseSession = currentSessions
+      .reverse()
+      .find((session: SessionTypes.Struct) => {
+        return session.peer.metadata.name.includes('Keplr');
+      });
+    if (reuseSession) {
+      session = reuseSession;
+    }
   }
   let accounts: AccountData[] = [];
 
@@ -149,12 +151,13 @@ export async function initKeplrMobile(
 export async function onKeplrMobileDisconnect(topic = session?.topic) {
   if (topic) {
     if (!client) return;
-    client.disconnect({
+    await client.disconnect({
       topic,
       reason: {
         code: 6000,
         message: 'USER_DISCONNECTED',
       },
     });
+    session = null;
   }
 }

@@ -61,11 +61,13 @@ export async function initWalletConnectV2Connector(
     projectId: options.walletConnectProjectId,
     metadata: options.walletConnectMetadata,
   });
-  const lastKeyIndex = wcConnector.session.getAll().length - 1;
-  // TODO: allow selecting sessions
-  if (lastKeyIndex > -1) {
-    const lastSession = wcConnector.session.getAll()[lastKeyIndex];
-    if (lastSession) session = lastSession;
+  if (!session) {
+    const lastKeyIndex = wcConnector.session.getAll().length - 1;
+    // TODO: allow selecting sessions
+    if (lastKeyIndex > -1) {
+      const lastSession = wcConnector.session.getAll()[lastKeyIndex];
+      if (lastSession) session = lastSession;
+    }
   }
   let accounts: AccountData[] = [];
 
@@ -237,12 +239,13 @@ export async function listenWalletConnectV2StoreChange(
 export async function onWalletConnectV2Disconnect(topic = session?.topic) {
   if (topic) {
     if (!client) return;
-    client.disconnect({
+    await client.disconnect({
       topic,
       reason: {
         code: 6000,
         message: 'USER_DISCONNECTED',
       },
     });
+    session = null;
   }
 }

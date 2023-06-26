@@ -9,9 +9,9 @@ export interface Props extends HTMLAttributes<HTMLOrSVGElement> {
 function getIconViewBox(type?: LikeCoinWalletConnectorMethodType) {
   switch (type) {
     case LikeCoinWalletConnectorMethodType.WalletConnectV2:
-      return "0 0 64 64";
+      return '0 0 64 64';
     default:
-      return "0 0 32 32";
+      return '0 0 32 32';
   }
 }
 

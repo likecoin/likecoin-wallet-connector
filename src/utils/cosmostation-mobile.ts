@@ -35,14 +35,16 @@ export async function initCosmostationMobile(
   });
   client = wcConnector;
   // TODO: allow selecting sessions
-  const currentSessions = wcConnector.session.getAll();
-  const reuseSession = currentSessions
-    .reverse()
-    .find((session: SessionTypes.Struct) => {
-      return session.peer.metadata.name.includes('Cosmostation');
-    });
-  if (reuseSession) {
-    session = reuseSession;
+  if (!session) {
+    const currentSessions = wcConnector.session.getAll();
+    const reuseSession = currentSessions
+      .reverse()
+      .find((session: SessionTypes.Struct) => {
+        return session.peer.metadata.name.includes('Cosmostation');
+      });
+    if (reuseSession) {
+      session = reuseSession;
+    }
   }
   let accounts: AccountData[] = [];
 
@@ -152,12 +154,13 @@ export const checkIsInCosmostationMobileInAppBrowser = () =>
 export async function onCosmostationMobileDisconnect(topic = session?.topic) {
   if (topic) {
     if (!client) return;
-    client.disconnect({
+    await client.disconnect({
       topic,
       reason: {
         code: 6000,
         message: 'USER_DISCONNECTED',
       },
     });
+    session = null;
   }
 }

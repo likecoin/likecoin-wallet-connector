@@ -16,6 +16,7 @@ import {
   LikeCoinWalletConnectorOptions,
 } from '../types';
 import { SignClient } from '@walletconnect/sign-client/dist/types/client';
+import { convertWalletConnectV2AccountResponse } from './wallet';
 
 let session: SessionTypes.Struct | null = null;
 let client: SignClient | null = null;
@@ -23,7 +24,7 @@ let realAccounts: AccountData[] | null = null;
 
 export async function getWalletConnectV2Connector(
   options: SignClientTypes.Options
-) {
+): Promise<SignClient> {
   if (!client) {
     client = await Client.init({
       projectId: options.projectId,
@@ -31,6 +32,24 @@ export async function getWalletConnectV2Connector(
     });
   }
   return client;
+}
+
+export async function getWalletConnectV2Accounts(
+  wcConnector: SignClient,
+  chainId: string,
+  topic: string
+) {
+  const accs = await wcConnector
+    .request({
+      topic,
+      chainId: `cosmos:${chainId}`,
+      request: {
+        method: 'cosmos_getAccounts',
+        params: {},
+      },
+    })
+    .then(acc => (acc as any[]).map(convertWalletConnectV2AccountResponse));
+  return accs;
 }
 
 export async function initWalletConnectV2Connector(
@@ -49,30 +68,6 @@ export async function initWalletConnectV2Connector(
     if (lastSession) session = lastSession;
   }
   let accounts: AccountData[] = [];
-
-  const getAccounts = async () => {
-    const accs = await wcConnector
-      .request({
-        topic: session!.topic,
-        chainId: `cosmos:${options.chainId}`,
-        request: {
-          method: 'cosmos_getAccounts',
-          params: {},
-        },
-      })
-      .then(acc =>
-        (acc as any[]).map(a => {
-          const { pubkey, ...accounts } = a;
-          const isHex = pubkey.length === 66 && pubkey.match(/[0-9A-Fa-f]{6}/g);
-          return {
-            ...accounts,
-            pubkey: Buffer.from(pubkey, isHex ? 'hex' : 'base64'),
-          };
-        })
-      );
-    realAccounts = accs;
-    return accs;
-  };
 
   if (
     client &&
@@ -151,7 +146,11 @@ export async function initWalletConnectV2Connector(
     session = await approval();
 
     if (!isMobileDevice()) {
-      accounts = await getAccounts();
+      accounts = await getWalletConnectV2Accounts(
+        wcConnector,
+        options.chainId,
+        session.topic
+      );
     } else {
       accounts = Object.values(session.namespaces)
         .map(namespace => namespace.accounts)
@@ -167,7 +166,16 @@ export async function initWalletConnectV2Connector(
   }
   const offlineSigner: OfflineSigner = {
     getAccounts: async () =>
-      realAccounts ? Promise.resolve(realAccounts) : await getAccounts(),
+      realAccounts
+        ? Promise.resolve(realAccounts)
+        : await getWalletConnectV2Accounts(
+            wcConnector,
+            options.chainId,
+            session!.topic
+          ).then(accs => {
+            realAccounts = accs;
+            return accs;
+          }),
     signAmino: async (signerBech32Address, signDoc) => {
       const result = await wcConnector.request({
         topic: session!.topic,
@@ -226,13 +234,13 @@ export async function listenWalletConnectV2StoreChange(
   });
 }
 
-export async function onWalletConnectV2Disconnect(targetSession = session) {
-  if (targetSession) {
+export async function onWalletConnectV2Disconnect(topic = session?.topic) {
+  if (topic) {
     if (!client) return;
     client.disconnect({
-      topic: targetSession.topic,
+      topic,
       reason: {
-        code: 0,
+        code: 6000,
         message: 'USER_DISCONNECTED',
       },
     });

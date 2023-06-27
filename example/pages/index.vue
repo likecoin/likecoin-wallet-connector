@@ -229,6 +229,7 @@ export default {
         LikeCoinWalletConnectorMethodType.Leap,
         LikeCoinWalletConnectorMethodType.CosmostationMobile,
         LikeCoinWalletConnectorMethodType.KeplrMobile,
+        LikeCoinWalletConnectorMethodType.LeapMobile,
       ],
       keplrSignOptions: {
         disableBalanceCheck: true,

@@ -128,6 +128,9 @@ export class LikeCoinWalletConnector {
           : true,
 
       language: options.language || 'en',
+
+      // Events
+      onToggleCollapsibleConnectionMethodList: options.onToggleCollapsibleConnectionMethodList || (() => {}),
     };
 
     this.sessionAccounts = [];
@@ -189,6 +192,7 @@ export class LikeCoinWalletConnector {
                 keplrInstallCTAPreset={this.options.keplrInstallCTAPreset}
                 title={this.options.connectWalletTitle}
                 mobileWarning={this.options.connectWalletMobileWarning}
+                onToggleCollapsibleList={this.options.onToggleCollapsibleConnectionMethodList}
                 onClose={() => {
                   this.closeDialog();
                   resolve(undefined);

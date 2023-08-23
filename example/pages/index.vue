@@ -250,6 +250,10 @@ export default {
       connectWalletTitle: 'Login',
       connectWalletMobileWarning: 'Mobile Warning',
       language: 'zh',
+
+      onToggleCollapsibleConnectionMethodList: (isCollapsed) => {
+        console.log('onToggleCollapsibleConnectionMethodList', isCollapsed);
+      },
     });
     const session = this.connector.restoreSession();
     this.handleConnection(session);

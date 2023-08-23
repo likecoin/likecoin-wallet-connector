@@ -99,6 +99,7 @@ export interface ConnectionMethodSelectionDialogProps
   keplrInstallCTAPreset?: KeplrInstallCTAPreset;
   title?: string;
   mobileWarning?: string;
+  onToggleCollapsibleList?: (isCollapsed: boolean) => void;
   onClose?: () => void;
   onConnect?: (method: LikeCoinWalletConnectorMethodType, params?: any) => void;
 }
@@ -113,6 +114,7 @@ export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialog
   keplrInstallCTAPreset,
   title,
   mobileWarning,
+  onToggleCollapsibleList,
   onClose,
   onConnect,
 }) => {
@@ -218,6 +220,7 @@ export const ConnectionMethodSelectionDialog: FC<ConnectionMethodSelectionDialog
           collapsibleToggleButtonTitle={intl.formatMessage({
             id: 'connect_wallet_other_methods',
           })}
+          onToggleCollapsibleList={onToggleCollapsibleList}
           onSelectMethod={onConnect}
         />
       ))}

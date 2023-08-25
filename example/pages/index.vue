@@ -254,6 +254,9 @@ export default {
       onToggleCollapsibleConnectionMethodList: (isCollapsed) => {
         console.log('onToggleCollapsibleConnectionMethodList', isCollapsed);
       },
+      onSelectConnectionMethod: (method) => {
+        console.log('onSelectConnectionMethod', method);
+      },
     });
     const session = this.connector.restoreSession();
     this.handleConnection(session);

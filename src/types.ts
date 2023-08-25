@@ -68,6 +68,7 @@ export interface LikeCoinWalletConnectorConfig {
   language?: string;
 
   onToggleCollapsibleConnectionMethodList?: (isCollapsed: boolean) => void;
+  onSelectConnectionMethod?: (method: LikeCoinWalletConnectorMethodType) => void;
 }
 
 export type LikeCoinWalletConnectorOptions = Required<

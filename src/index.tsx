@@ -131,6 +131,7 @@ export class LikeCoinWalletConnector {
 
       // Events
       onToggleCollapsibleConnectionMethodList: options.onToggleCollapsibleConnectionMethodList || (() => {}),
+      onSelectConnectionMethod: options.onSelectConnectionMethod || (() => {}),
     };
 
     this.sessionAccounts = [];
@@ -171,6 +172,7 @@ export class LikeCoinWalletConnector {
           method: LikeCoinWalletConnectorMethodType,
           params?: any
         ) => {
+          if (this.options.onSelectConnectionMethod) this.options.onSelectConnectionMethod(method);
           const result = await this.selectMethod(method, params);
           resolve(result);
         };

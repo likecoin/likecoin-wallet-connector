@@ -23,9 +23,15 @@ export interface LikeCoinWalletConnectorMethodConfigurable {
   description?: string;
 }
 
-export type LikeCoinWalletConnectorMethodConfig = LikeCoinWalletConnectorMethodType | [LikeCoinWalletConnectorMethodType, LikeCoinWalletConnectorMethodConfigurable];
+export type LikeCoinWalletConnectorMethodConfig =
+  | LikeCoinWalletConnectorMethodType
+  | [
+      LikeCoinWalletConnectorMethodType,
+      LikeCoinWalletConnectorMethodConfigurable
+    ];
 
-export interface LikeCoinWalletConnectorMethod extends LikeCoinWalletConnectorMethodConfigurable {
+export interface LikeCoinWalletConnectorMethod
+  extends LikeCoinWalletConnectorMethodConfigurable {
   type: LikeCoinWalletConnectorMethodType;
   isInstalled: boolean;
   isMobileOk: boolean;

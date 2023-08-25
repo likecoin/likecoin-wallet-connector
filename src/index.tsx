@@ -130,7 +130,8 @@ export class LikeCoinWalletConnector {
       language: options.language || 'en',
 
       // Events
-      onToggleCollapsibleConnectionMethodList: options.onToggleCollapsibleConnectionMethodList || (() => {}),
+      onToggleCollapsibleConnectionMethodList:
+        options.onToggleCollapsibleConnectionMethodList || (() => {}),
       onSelectConnectionMethod: options.onSelectConnectionMethod || (() => {}),
     };
 
@@ -172,7 +173,9 @@ export class LikeCoinWalletConnector {
           method: LikeCoinWalletConnectorMethodType,
           params?: any
         ) => {
-          if (this.options.onSelectConnectionMethod) this.options.onSelectConnectionMethod(method);
+          if (this.options.onSelectConnectionMethod) {
+            this.options.onSelectConnectionMethod(method);
+          }
           const result = await this.selectMethod(method, params);
           resolve(result);
         };
@@ -194,7 +197,9 @@ export class LikeCoinWalletConnector {
                 keplrInstallCTAPreset={this.options.keplrInstallCTAPreset}
                 title={this.options.connectWalletTitle}
                 mobileWarning={this.options.connectWalletMobileWarning}
-                onToggleCollapsibleList={this.options.onToggleCollapsibleConnectionMethodList}
+                onToggleCollapsibleList={
+                  this.options.onToggleCollapsibleConnectionMethodList
+                }
                 onClose={() => {
                   this.closeDialog();
                   resolve(undefined);

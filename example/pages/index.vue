@@ -251,11 +251,8 @@ export default {
       connectWalletMobileWarning: 'Mobile Warning',
       language: 'zh',
 
-      onToggleCollapsibleConnectionMethodList: (isCollapsed) => {
-        console.log('onToggleCollapsibleConnectionMethodList', isCollapsed);
-      },
-      onSelectConnectionMethod: (method) => {
-        console.log('onSelectConnectionMethod', method);
+      onEvent: ({ type, ...payload}) => {
+        console.log('onEvent', type, payload);
       },
     });
     const session = this.connector.restoreSession();

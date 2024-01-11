@@ -40,10 +40,7 @@ import {
   listenLeapKeyStoreChange,
   removeLeapKeyStoreChangeListener,
 } from './utils/leap';
-import {
-  initWeb3Auth,
-  disconnectWeb3Auth,
-} from './utils/web3auth';
+import { initWeb3Auth, disconnectWeb3Auth } from './utils/web3auth';
 import { deserializePublicKey, serializePublicKey } from './utils/wallet';
 
 import {
@@ -136,7 +133,8 @@ export class LikeCoinWalletConnector {
 
       onEvent: options.onEvent || (() => {}),
 
-      blockExplorerURL: options.blockExplorerURL || 'https://mintscan.io/likecoin',
+      blockExplorerURL:
+        options.blockExplorerURL || 'https://mintscan.io/likecoin',
       web3AuthClientId: options.web3AuthClientId || '',
       web3AuthNetwork: options.web3AuthNetwork || 'mainnet',
     };

@@ -167,7 +167,7 @@ import {
   SigningStargateClient,
 } from '@cosmjs/stargate';
 
-import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethodType } from '../../dist';
+import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethodType } from '../../dist/wallet-connector.esm';
 
 export default {
   data() {
@@ -231,6 +231,8 @@ export default {
         LikeCoinWalletConnectorMethodType.MetaMaskLeap,
         LikeCoinWalletConnectorMethodType.CosmostationMobile,
         LikeCoinWalletConnectorMethodType.WalletConnectV2,
+        LikeCoinWalletConnectorMethodType.KeplrMobile,
+        LikeCoinWalletConnectorMethodType.Web3Auth,
       ],
       keplrSignOptions: {
         disableBalanceCheck: true,
@@ -255,6 +257,9 @@ export default {
       onEvent: ({ type, ...payload}) => {
         console.log('onEvent', type, payload);
       },
+
+      web3AuthNetwork: 'mainnet',
+      web3AuthClientId: 'clientId',
     });
     const session = this.connector.restoreSession();
     this.handleConnection(session);

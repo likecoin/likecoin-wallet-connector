@@ -15,6 +15,7 @@ export enum LikeCoinWalletConnectorMethodType {
   Leap = 'leap',
   MetaMaskLeap = 'metamask-leap',
   WalletConnectV2 = 'walletconnect-v2',
+  Web3Auth = 'web3auth',
 }
 
 export interface LikeCoinWalletConnectorMethodConfigurable {
@@ -98,6 +99,10 @@ export interface LikeCoinWalletConnectorConfig {
   language?: string;
 
   onEvent?: (event: LikeCoinWalletConnectorEvent) => void;
+
+  blockExplorerURL?: string;
+  web3AuthClientId?: string;
+  web3AuthNetwork?: string;
 }
 
 export type LikeCoinWalletConnectorOptions = Required<

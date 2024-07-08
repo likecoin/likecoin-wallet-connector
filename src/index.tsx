@@ -349,7 +349,8 @@ export class LikeCoinWalletConnector {
 
   init = async (
     methodType: LikeCoinWalletConnectorMethodType,
-    params?: any
+    params?: any,
+    language = this.options.language,
   ) => {
     let initiator: Promise<LikeCoinWalletConnectorInitResponse>;
 
@@ -359,17 +360,19 @@ export class LikeCoinWalletConnector {
         if (!accessToken) {
           initiator = new Promise(resolve => {
             this._renderingRoot.render(
-              <AuthcoreDialog
-                onMount={({ containerId }) => {
-                  initAuthcore(this.options, { containerId });
-                }}
-                onClose={() => {
-                  this.closeDialog();
-                  resolve(undefined);
-                  this._events.emit('authcore_auth_closed');
-                }}
-                isHideSocialLogin={!!(this.options.authcoreClientId === 'likecoin-app-hidesocial')}
-              />
+              <IntlProvider language={language}>
+                <AuthcoreDialog
+                  onMount={({ containerId }) => {
+                    initAuthcore(this.options, { containerId });
+                  }}
+                  onClose={() => {
+                    this.closeDialog();
+                    resolve(undefined);
+                    this._events.emit('authcore_auth_closed');
+                  }}
+                  isHideSocialLogin={!!(this.options.authcoreClientId === 'likecoin-app-hidesocial')}
+                />
+              </IntlProvider>
             );
           });
         } else {

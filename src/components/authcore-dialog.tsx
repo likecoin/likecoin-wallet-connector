@@ -1,4 +1,5 @@
 import React, { FC, useEffect } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { Dialog } from './dialog';
 
@@ -33,10 +34,10 @@ export const AuthcoreDialog: FC<AuthcoreDialogProps> = ({
       {isHideSocialLogin && (
         <div className="lk-flex lk-flex-col lk-flex-col lk-w-full lk-items-center lk-gap-y-2 lk-mt-[12px]">
           <p className="lk-text-like-gray lk-text-center lk-w-full lk-text-[12px]">
-            If you can't find your login method, <span className='lk-text-like-green'>reset your password.</span>
-          </p>
-          <p className="lk-text-like-gray lk-text-center lk-w-full lk-text-[12px]">
-            若找不到你的登入方式，請<span className='lk-text-like-green'>重設密碼</span>
+            <FormattedMessage id="wallet_connect_hint_reset_password"/>
+            <span className='lk-text-like-green'>
+              <FormattedMessage id="wallet_connect_hint_reset_password_highlight"/>
+            </span>
           </p>
         </div>
       )}

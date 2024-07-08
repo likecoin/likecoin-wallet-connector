@@ -368,6 +368,7 @@ export class LikeCoinWalletConnector {
                   resolve(undefined);
                   this._events.emit('authcore_auth_closed');
                 }}
+                isHideSocialLogin={!!(this.options.authcoreClientId === 'likecoin-app-hidesocial')}
               />
             );
           });

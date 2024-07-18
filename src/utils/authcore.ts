@@ -15,6 +15,7 @@ import { AuthCoreAuthClient, AuthCoreWidgets } from '@likecoin/authcore-js';
 import {
   LikeCoinWalletConnectorInitResponse,
   LikeCoinWalletConnectorOptions,
+  AuthCoreInitialScreen
 } from '../types';
 import { convertAddressPrefix } from './wallet';
 
@@ -29,7 +30,8 @@ export async function initAuthcore(
   }: {
     accessToken?: string;
     containerId?: string;
-  } = {}
+  } = {},
+  authcoreInitialScreen: AuthCoreInitialScreen = 'signin'
 ): Promise<LikeCoinWalletConnectorInitResponse> {
   const authcoreApiHost = options.authcoreApiHost;
 
@@ -66,7 +68,7 @@ export async function initAuthcore(
       primaryColour: '#28646e',
       container: containerId,
       root: `${authcoreApiHost}/widgets`,
-      initialScreen: 'signin',
+      initialScreen: authcoreInitialScreen,
       socialLoginPaneStyle: 'top',
       socialLoginPaneOption: 'grid',
       internal: true,

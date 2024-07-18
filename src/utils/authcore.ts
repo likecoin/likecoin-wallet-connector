@@ -27,11 +27,12 @@ export async function initAuthcore(
   {
     accessToken,
     containerId,
+    initialScreen = 'signin',
   }: {
     accessToken?: string;
     containerId?: string;
+    initialScreen?: AuthCoreInitialScreen;
   } = {},
-  authcoreInitialScreen: AuthCoreInitialScreen = 'signin'
 ): Promise<LikeCoinWalletConnectorInitResponse> {
   const authcoreApiHost = options.authcoreApiHost;
 
@@ -68,7 +69,7 @@ export async function initAuthcore(
       primaryColour: '#28646e',
       container: containerId,
       root: `${authcoreApiHost}/widgets`,
-      initialScreen: authcoreInitialScreen,
+      initialScreen: initialScreen,
       socialLoginPaneStyle: 'top',
       socialLoginPaneOption: 'grid',
       internal: true,

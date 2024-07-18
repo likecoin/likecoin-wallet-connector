@@ -357,7 +357,7 @@ export class LikeCoinWalletConnector {
     methodType: LikeCoinWalletConnectorMethodType,
     params?: any,
     language = this.options.language,
-    authcoreInitialScreen?: AuthCoreInitialScreen
+    initialScreen?: AuthCoreInitialScreen
   ) => {
     let initiator: Promise<LikeCoinWalletConnectorInitResponse>;
 
@@ -370,7 +370,7 @@ export class LikeCoinWalletConnector {
               <IntlProvider language={language}>
                 <AuthcoreDialog
                   onMount={({ containerId }) => {
-                    initAuthcore(this.options, { containerId }, authcoreInitialScreen);
+                    initAuthcore(this.options, { containerId, initialScreen });
                   }}
                   onClose={() => {
                     this.closeDialog();
@@ -388,7 +388,7 @@ export class LikeCoinWalletConnector {
             );
           });
         } else {
-          initiator = initAuthcore(this.options, { accessToken }, authcoreInitialScreen);
+          initiator = initAuthcore(this.options, { accessToken, initialScreen });
         }
         break;
 

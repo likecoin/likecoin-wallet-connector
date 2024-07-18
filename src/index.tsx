@@ -370,7 +370,9 @@ export class LikeCoinWalletConnector {
               <IntlProvider language={language}>
                 <AuthcoreDialog
                   onMount={({ containerId }) => {
-                    initAuthcore(this.options, { containerId, initialScreen });
+                    setTimeout(() => {
+                      initAuthcore(this.options, { containerId, initialScreen });
+                    }, 100);
                   }}
                   onClose={() => {
                     this.closeDialog();

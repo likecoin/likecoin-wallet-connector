@@ -49,9 +49,13 @@ export const AuthcoreDialog: FC<AuthcoreDialogProps> = ({
             />
           </svg>
 
-          <p><FormattedMessage id="wallet_connect_hint_browser_warning" /></p>
+          <p>
+            <FormattedMessage id="wallet_connect_hint_browser_warning" />
+          </p>
           {isHideSocialLogin && (
-            <p><FormattedMessage id="wallet_connect_hint_reset_password" /></p>
+            <p>
+              <FormattedMessage id="wallet_connect_hint_reset_password" />
+            </p>
           )}
         </div>
       </aside>

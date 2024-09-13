@@ -1,14 +1,15 @@
 # Changelog
 
-## [0.26.7-beta.0] - 2024-09-12
+## [0.26.7] - 2024-09-14
 
 ### Changed
 
 - Detect expired Authcore access token on restore session
+- Upgrade nuxt version in example
 
 ### Fixed
 
-- Show first installed wallet with email login
+- Show first installed wallet together with email login
 
 # Changelog
 

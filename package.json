@@ -82,11 +82,11 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@cosmjs/proto-signing": "^0.30.1",
+    "@cosmjs/proto-signing": "^0.28.13",
     "@headlessui/react": "1.7.11",
     "@leapwallet/cosmos-snap-provider": "^0.1.24",
     "@likecoin/authcore-js": "0.3.0-like.1",
-    "@likecoin/secretd-js": "^0.4.5",
+    "@likecoin/secretd-js": "^0.5.0-beta.0",
     "@walletconnect/browser-utils": "^1.8.0",
     "@walletconnect/modal": "^2.4.5",
     "@walletconnect/sign-client": "^2.8.0",

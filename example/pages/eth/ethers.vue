@@ -67,15 +67,7 @@
                       label="Amount"
                       type="number"
                       :disabled="isSending"
-                      suffix="LIKE"
-                      required
-                    />
-                    <v-text-field
-                      v-model="fee"
-                      label="Fee"
-                      type="number"
-                      :disabled="isSending"
-                      suffix="nanolike"
+                      suffix="ETH"
                       required
                     />
                     <div class="d-flex justify-end">
@@ -156,26 +148,17 @@
       </v-container>
     </v-main>
     <v-footer app>
-      <v-container>Demo of @likecoin/wallet-connector</v-container>
-      <v-btn
-        class="text-truncate"
-        outlined
-        style="max-width: 150px"
-        @click="$router.push('/eth/ethers')"
-      >
-        Ethers
-      </v-btn>
+      <v-container>Demo of ethers + @likecoin/wallet-connector</v-container>
     </v-footer>
   </v-app>
 </template>
 
 <script>
-import {
-  assertIsDeliverTxSuccess,
-  SigningStargateClient,
-} from '@cosmjs/stargate';
+import { JsonRpcProvider, formatEther, verifyMessage, parseEther } from 'ethers';
 
-import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethodType } from '../../dist';
+import { LikeCoinWalletConnector, LikeCoinWalletConnectorMethodType } from '../../../dist';
+
+import { AuthcoreSigner } from '~/utils/ethers/AuthcoreSigner';
 
 export default {
   data() {
@@ -184,12 +167,14 @@ export default {
       isLoading: true,
 
       method: undefined,
-      offlineSigner: undefined,
       walletAddress: '',
 
-      toAddress: 'like145at6ratky0leykf43zqx8q33ramxhjclh0t9u',
+      toAddress: '0xCb3152aCb16a60325Abd5Ab0e0CD2174a5292414',
       amount: 1,
-      fee: 2000000,
+
+      ethSigner: null,
+      ethProvider: null,
+      ethBalance: 0,
 
       signArbitraryMessage: 'Hello, @likecoin/wallet-connector!',
       signArbitraryResult: '',
@@ -208,9 +193,10 @@ export default {
       return `${address.substring(0, 8)}...${address.substring(length - 3, length)}`;
     },
     txURL() {
-      return this.connector
-        ? `${this.connector.options.restURL}/cosmos/tx/v1beta1/txs/${this.txHash}`
-        : '';
+      return `https://sepolia-optimism.etherscan.io/tx/${this.txHash}`
+    },
+    isEthSupported() {
+      return !!this.ethSigner;
     },
   },
   async mounted() {
@@ -232,14 +218,8 @@ export default {
       bech32PrefixConsPub: 'likevalconspub',
       availableMethods: [
         LikeCoinWalletConnectorMethodType.LikerId,
-        LikeCoinWalletConnectorMethodType.Keplr,
-        [LikeCoinWalletConnectorMethodType.KeplrMobile, { tier: 1, isRecommended: true }],
-        LikeCoinWalletConnectorMethodType.Cosmostation,
-        LikeCoinWalletConnectorMethodType.LikerLandApp,
-        LikeCoinWalletConnectorMethodType.Leap,
-        LikeCoinWalletConnectorMethodType.MetaMaskLeap,
-        LikeCoinWalletConnectorMethodType.CosmostationMobile,
-        LikeCoinWalletConnectorMethodType.WalletConnectV2,
+        // LikeCoinWalletConnectorMethodType.Keplr,
+        // LikeCoinWalletConnectorMethodType.Cosmostation,
       ],
       keplrSignOptions: {
         disableBalanceCheck: true,
@@ -249,21 +229,11 @@ export default {
       keplrInstallURLOverride: 'https://www.keplr.app/download',
       keplrInstallCTAPreset: 'fancy-banner',
       cosmostationDirectSignEnabled: true,
-      // example project id
-      walletConnectProjectId: '314eb526d846240aaa5e82cedd9788bf',
-      walletConnectMetadata: {
-        description: 'LikeCoin Wallet Connect Example',
-        url: 'https://like.co',
-        icons: ['https://like.co/logo.png'],
-        name: 'LikeCoin Wallet Connect',
-      },
-      connectWalletTitle: 'Login',
-      connectWalletMobileWarning: 'Mobile Warning',
       language: 'zh',
 
       authcoreClientId: 'likecoin-app-hidesocial',
       authcoreApiHost: 'https://likecoin-integration-test.authcore.io',
-      authcoreRedirectUrl: 'http://localhost:3000/in/register?method=liker-id',
+      authcoreRedirectUrl: `http://localhost:3000/in/register?method=liker-id&page=${encodeURIComponent('/eth/ethers')}`,
 
       onEvent: ({ type, ...payload}) => {
         console.log('onEvent', type, payload);
@@ -310,7 +280,19 @@ export default {
       this.method = method;
       this.walletAddress = account.address;
       this.offlineSigner = offlineSigner;
+      if (params.ethereumProvider) {
+        // Connect to the Ethereum network
+        const provider = new JsonRpcProvider("https://opt-sepolia.g.alchemy.com/v2/6-pw8XvhGc-oOc-xY3vkWKdrM8lzrtUc");
+        this.ethSigner = new AuthcoreSigner(params.ethereumProvider, provider);
+        this.ethProvider = provider;
+        this.initEth()
+      }
       this.connector.once('account_change', this.handleAccountChange);
+    },
+    async initEth() {
+      const walletAddress = await this.ethSigner.getAddress();
+      this.walletAddress = walletAddress;
+      this.ethBalance = formatEther(await this.ethProvider.getBalance(walletAddress))
     },
     async connect() {
       const connection = await this.connector.openConnectWalletModal();
@@ -330,49 +312,16 @@ export default {
         this.txHash = '';
         this.error = '';
         this.isShowAlert = false;
-
-        const connection = await this.connector.initIfNecessary();
-        if (!connection) return;
-        const { method, accounts: [account], offlineSigner } = connection;
-        this.method = method;
-        this.walletAddress = account.address;
-        this.offlineSigner = offlineSigner;
-
         this.isSending = true;
-        const client = await SigningStargateClient.connectWithSigner(
-          this.connector.options.rpcURL,
-          this.offlineSigner
-        );
-
-        const denom = this.connector.options.coinMinimalDenom;
-        const amount = [
-          {
-            amount: `${this.amount * Math.pow(10, this.connector.options.coinDecimals)}`,
-            denom,
-          },
-        ];
-        const fee = {
-          amount: [
-            {
-              amount: `${this.fee}`,
-              denom,
-            },
-          ],
-          gas: '200000',
-        };
-        const result = await client.sendTokens(
-          this.walletAddress,
-          this.toAddress,
-          amount,
-          fee,
-          ''
-        );
-        assertIsDeliverTxSuccess(result);
-
-        if (result.code === 0) {
-          this.txHash = result.transactionHash;
+        const tx = await this.ethSigner.sendTransaction({
+          to: this.toAddress,
+          value: parseEther(this.amount.toString()),
+        });
+        const receipt = await tx.wait();
+        if (receipt.status === 1) {
+          this.txHash = receipt.transactionHash;
         } else {
-          this.error = result.rawLog;
+          this.error = receipt;
         }
       } catch (error) {
         this.error = `${error.message || error.name || error}`;
@@ -381,30 +330,18 @@ export default {
         this.isSending = false;
       }
     },
+
     async signArbitrary() {
       try {
         this.error = '';
         this.isShowAlert = false;
         this.signArbitraryResult = '';
-
-        const connection = await this.connector.initIfNecessary();
-        if (!connection) return;
-        const { method, accounts: [account], offlineSigner, signArbitrary } = connection;
-        this.method = method;
-        this.walletAddress = account.address;
-        this.offlineSigner = offlineSigner;
-        if (!offlineSigner.signArbitrary) {
-          throw new Error('signArbitrary not supported');
-        }
-
         this.isSigningArbitrary = true;
 
-        const result = await offlineSigner.signArbitrary(
-          this.connector.options.chainId,
-          account.address,
-          this.signArbitraryMessage,
-        );
-        this.signArbitraryResult = JSON.stringify(result);
+        this.signArbitraryResult = await this.ethSigner.signMessage(this.signArbitraryMessage);
+        if (verifyMessage(this.signArbitraryMessage, this.signArbitraryResult) !== this.walletAddress) {
+          throw new Error('Invalid signature');
+        }
       } catch (error) {
         this.error = `${error.message || error.name || error}`;
         console.error(error);

@@ -45,6 +45,8 @@ export default {
       '@cosmjs',
       '@walletconnect',
       '@web3modal',
+      'ethers',
+      '@noble/curves',
     ],
   }
 }

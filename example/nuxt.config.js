@@ -42,6 +42,7 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [
+      '@cosmjs',
       '@walletconnect',
       '@web3modal',
     ],

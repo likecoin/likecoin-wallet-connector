@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import { AccountData } from '@cosmjs/proto-signing';
 import { IQRCodeModal } from '@walletconnect/legacy-types';
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { jwtDecode } from 'jwt-decode';
 
 import { AuthcoreDialog } from './components/authcore-dialog';

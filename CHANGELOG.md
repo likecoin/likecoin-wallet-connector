@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.27.1] - 2024-12-10
+
+### Fixed
+
+- Fix EventEmitter import syntax for easier polyfill
+
 ## [0.27.0] - 2024-12-09
 
 ### Changed

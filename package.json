@@ -1,5 +1,5 @@
 {
-  "version": "0.26.7",
+  "version": "0.27.0",
   "license": "GPL-3.0-or-later",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -20,6 +20,10 @@
     "analyze": "size-limit --why",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/likecoin/likecoin-wallet-connector.git"
   },
   "peerDependencies": {
     "react": ">=16"

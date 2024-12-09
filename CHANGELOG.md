@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.0] - 2024-12-09
+
+### Changed
+
+- Upgrade @likecoin/secretd-js to 0.4.5
+- Upgrade @cosmjs/amino to 0.30.1
+
 ## [0.26.7] - 2024-09-14
 
 ### Changed

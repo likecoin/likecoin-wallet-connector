@@ -1,8 +1,8 @@
 <script>
 export default {
   fetch({ redirect, query }) {
-    const { code, method } = query;
-    redirect(`/?code=${code}&method=${method}`)
+    const { code, method, page = '/' } = query;
+    redirect(`${page}?code=${code}&method=${method}`)
   }
 }
 </script>

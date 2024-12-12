@@ -8,6 +8,7 @@ import {
 import { SignDoc } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
 import {
   AuthcoreCosmosProvider,
+  AuthcoreEthereumProvider,
   AuthcoreVaultClient,
 } from '@likecoin/secretd-js';
 import { AuthCoreAuthClient, AuthCoreWidgets } from '@likecoin/authcore-js';
@@ -20,6 +21,7 @@ import {
 import { convertAddressPrefix } from './wallet';
 
 let cosmosProvider: any | null = null;
+let ethereumProvider: any | null = null;
 let keyVaultClient: any | null = null;
 
 export async function initAuthcore(
@@ -42,9 +44,14 @@ export async function initAuthcore(
       apiBaseURL: authcoreApiHost,
       accessToken,
     });
-    cosmosProvider = await new AuthcoreCosmosProvider({
-      client: keyVaultClient,
-    });
+    [cosmosProvider, ethereumProvider] = await Promise.all([
+      new AuthcoreCosmosProvider({
+        client: keyVaultClient,
+      }),
+      new AuthcoreEthereumProvider({
+        client: keyVaultClient,
+      }),
+    ]);
     const addresses = await cosmosProvider.getAddresses();
     accounts = addresses.map((address: string) => {
       const likeAddress = convertAddressPrefix(address);
@@ -105,7 +112,7 @@ export async function initAuthcore(
   return {
     accounts,
     offlineSigner,
-    params: { accessToken },
+    params: { accessToken, cosmosProvider, ethereumProvider },
   };
 }
 

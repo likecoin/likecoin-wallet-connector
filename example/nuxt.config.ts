@@ -1,5 +1,7 @@
-export default {
-  target: 'static',
+import { defineNuxtConfig } from '@nuxt/bridge'
+
+export default defineNuxtConfig({
+  bridge: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'LikeCoin Wallet Connector Example',
@@ -30,10 +32,6 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-  ],
-
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/vuetify',
@@ -49,4 +47,4 @@ export default {
       '@noble/curves',
     ],
   }
-}
+})

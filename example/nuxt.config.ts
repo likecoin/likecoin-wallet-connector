@@ -1,3 +1,4 @@
+import path from 'path'
 import { defineNuxtConfig } from '@nuxt/bridge'
 
 export default defineNuxtConfig({
@@ -27,6 +28,7 @@ export default defineNuxtConfig({
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/textEncoder' },
+    { src: '~/plugins/wagmi' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -39,11 +41,42 @@ export default defineNuxtConfig({
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    extend(config) {
+      config.module.rules.push({
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
+      })
+      config.resolve.alias['node:crypto'] = path.join(__dirname, './node_modules/crypto-browserify');
+    },
+    babel: {
+      presets: [[
+        '@nuxt/babel-preset-app',
+        {
+          corejs: { version: 3 },
+          exclude: ['transform-exponentiation-operator']
+        }
+      ]],
+      plugins: [
+        '@babel/plugin-transform-nullish-coalescing-operator',
+        '@babel/plugin-proposal-numeric-separator',
+      ],
+    },
     transpile: [
       '@cosmjs',
+      '@metamask',
+      '@tanstack/query-core',
+      '@tanstack/vue-query',
+      '@wagmi',
       '@walletconnect',
       '@web3modal',
+      'abitype',
       'ethers',
+      'eth-block-tracker',
+      'use-wagmi',
+      'unstorage',
+      'superstruct',
+      'viem',
       '@noble/curves',
     ],
   }

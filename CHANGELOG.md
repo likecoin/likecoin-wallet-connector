@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.27.2] - 2025-02-06
+
+### Changed
+- Upgrade @likecoin/authcore-js to 0.3.0-like.2
+
 ## [0.27.1] - 2024-12-10
 
 ### Fixed

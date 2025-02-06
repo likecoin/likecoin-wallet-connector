@@ -1895,10 +1895,10 @@
     bignumber.js "^9.1.2"
     long "^5.2.3"
 
-"@likecoin/authcore-js@0.3.0-like.1":
-  version "0.3.0-like.1"
-  resolved "https://registry.yarnpkg.com/@likecoin/authcore-js/-/authcore-js-0.3.0-like.1.tgz#c5a790136c72cc5ef96e5ea33c16c66e0a740011"
-  integrity sha512-pBUHm6Xn37VqBeyprI5sNzweTD7YSFTMBqmcZqw2/Ds91eEmlv4EY68mDwVOn0Q23ojfUh7zeZ7KCNqr9HFFTw==
+"@likecoin/authcore-js@0.3.0-like.2":
+  version "0.3.0-like.2"
+  resolved "https://registry.yarnpkg.com/@likecoin/authcore-js/-/authcore-js-0.3.0-like.2.tgz#9e70bf38ce66e82fc59f296031ea38b5e8c1810d"
+  integrity sha512-9CiOWmuyiJIMsliUhroKlxhNt4lhqyZuA35zPicd4Y4azOy3ijzLCTqJMwQnZDmROaCPUbZRol6yqp04ija6XQ==
   dependencies:
     "@babel/runtime-corejs3" "^7.9.2"
     axios "^0.19.2"
